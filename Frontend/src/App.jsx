@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SignIn from './components/Signin';
 import LogIn from './components/Login'
 import Home from './components/Home';
+import PageNotFound from './components/PageNotFound';
 
 function App() {
   return (
@@ -12,9 +13,10 @@ function App() {
       <Navbar />
       <div className="max-w-7xl mx-auto pt-20 px-6">
         <Routes>
-          <Route path='/' element={<Home/>}/>
+          <Route path='/home' element={<Home/>}/>
           <Route path='/signin' element={<SignIn />} />
           <Route path='/login' element={<LogIn />} />
+          <Route path="*" element={<PageNotFound/>}/>
         </Routes>
       </div>
     </BrowserRouter>
