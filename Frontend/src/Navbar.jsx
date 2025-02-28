@@ -9,7 +9,7 @@ const Navbar = () => {
         <div className="container px-4 mx-auto">
           <div className="flex justify-between">
             <div className='flex items-center'>
-              <a className='text-2xl' href='\'>😉 Let's Talk</a>
+              <a className='text-2xl' href='/home'>😉 Let's Talk</a>
             </div>
             <div className="lg:flex justify-center space-x-10 items-center">
               <Link to={'/signin'} className='border-2 px-3 py-2 rounded-lg'>Sign in</Link>

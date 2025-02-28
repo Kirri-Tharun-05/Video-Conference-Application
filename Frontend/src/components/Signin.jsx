@@ -52,7 +52,7 @@ const signin = () => {
               <p>Or</p>
             </div>
             <div className=''>
-              <button className='px-3 py-3 rounded-lg bg-gradient-to-r  tracking-wide text-1xl border-white fon border-2 ' href='' onClick={handleGoogleLogin}><img src={gLogo} alt="" className='w-8 inline mx-2' />Sign in with Google</button>
+              <button className='px-3 py-3 rounded-lg bg-gradient-to-r  tracking-wide text-1xl border-white fon border-2 ' onClick={() => window.location.href = "http://localhost:8080/auth/google"}><img src={gLogo} alt="" className='w-8 inline mx-2' />Sign in with Google</button>
             </div>
           </div>
         </form>
