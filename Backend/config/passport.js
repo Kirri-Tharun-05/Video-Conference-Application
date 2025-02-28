@@ -10,7 +10,6 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                console.log("Google Profile:", profile);
                 const googleId = profile.id;
                 const username = profile.displayName;
                 const email = profile.emails?.[0]?.value || "";

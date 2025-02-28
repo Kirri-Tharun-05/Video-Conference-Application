@@ -25,10 +25,7 @@ const signin = () => {
       toast.error(e.response?.data?.message || 'Something went wrong');
     }
   };
-  const handleGoogleLogin = (e) => {
-    e.preventDefault();
-    window.location.href = 'http://localhost:8080/auth/google';
-  };
+
   return (
     <div className="flex flex-col items-center my-10">
       <div className='mb-4'>
