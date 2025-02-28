@@ -5,23 +5,20 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const signin = () => {
-  const [username,setusername]=useState('');
-  const [password,setpassword]=useState('');
-
-  const navigate =useNavigate();
-  const handleSubmit=async (e)=>{
+  const [username, setusername] = useState('');
+  const [password, setpassword] = useState('');
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const result= await axios.post('http://localhost:8080/signin',{
-        username,password
+    try {
+      const result = await axios.post('http://localhost:8080/signin', {
+        username, password
       });
-      console.log('Response :',result.data);
+      console.log('Response :', result.data);
       localStorage.setItem('flashMessage', result.data.message);
       navigate('/home')
-      // alert(result.data.message);
     }
-    catch(e){
-      // toast(`${e.response.data.message}`)
+    catch (e) {
       toast.error(e.response?.data?.message || 'Something went wrong');
     }
   };
@@ -35,11 +32,11 @@ const signin = () => {
         <form action="" className='flex flex-col items-center' onSubmit={handleSubmit}>
           <div className='my-10 mx-10'>
             <label htmlFor="username" className='mr-10 text-2xl tracking-wide'>Username</label>
-            <input type="text" id='username' className='border px-3 py-2 border-neutral-400 rounded' required onChange={(e)=>{setusername(e.target.value)}}/>
+            <input type="text" id='username' className='border px-3 py-2 border-neutral-400 rounded' required onChange={(e) => { setusername(e.target.value) }} />
           </div>
           <div className='my-5 mx-10 '>
             <label htmlFor="password" className='mr-12 tracking-wide text-2xl'>Password</label>
-            <input type="password" id='password' className='border px-3 py-2 border-neutral-400 rounded' required onChange={(e)=>{setpassword(e.target.value)}}/>
+            <input type="password" id='password' className='border px-3 py-2 border-neutral-400 rounded' required onChange={(e) => { setpassword(e.target.value) }} />
           </div>
           <div className="mt-8 flex flex-col justify-center items-center gap-5">
             <div className=''>

@@ -25,13 +25,22 @@ router.get("/login/failed", (req, res) => {
   });
 });
 router.get("/logout", (req, res) => {
-  req.logout();
+  req.logout((err) => { // ✅ Pass a callback function
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy(() => {  // ✅ Destroy session
+      res.clearCookie("connect.sid"); // ✅ Clear session cookie
+      res.redirect(CLIENT_URL); // ✅ Redirect to home page
+    });
+  });
+
   res.redirect(CLIENT_URL);
 });
 router.get("/google",
   passport.authenticate("google",
     {
-      scope: ["profile",'email'],
+      scope: ["profile", 'email'],
       prompt: 'select_account' // ✅ Forces Google to show the account selection screen 
     }));
 router.get(

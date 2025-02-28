@@ -8,6 +8,7 @@ const LocalStrategy = require('passport-local');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const authRoute = require("./src/routes/auth")
 const passportSetup = require('./config/passport');
+const httpStatus=require('http-status')
 
 
 const PORT = 8080;
@@ -85,6 +86,19 @@ app.post('/signin', async (req, res) => {
     res.status(status.FORBIDDEN).json({ message: e.message });
   }
 })
+
+app.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user) => {
+    if (err) return next(err); 
+    if (!user) {  // If authentication fails
+      return res.status(httpStatus.status.UNAUTHORIZED).json({ message: "Invalid credentials" });
+    }
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.status(httpStatus.status.OK).json({ message: "Successfully Logged In", user });
+    });
+  })(req, res, next);
+});
 
 app.listen(PORT, (req, res) => {
   console.log(`Listening to the port ${PORT}`);
