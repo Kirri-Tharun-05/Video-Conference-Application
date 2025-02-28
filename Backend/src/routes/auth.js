@@ -1,15 +1,22 @@
 const router = require("express").Router();
 const passport = require("passport");
 const CLIENT_URL = "http://localhost:5173/home";
+const User= require('../models/user');
 
+router.get('/user',(req,res)=>{
+    if(req.user){
+      res.status(200).json(req.user);
+    }
+    else{
+      res.status(401).json({message:'not authenticated'});
+    }
+})
 router.get("/login/success", (req, res) => {
-  console.log(req.user);
   if (req.user) {
     res.status(200).json({
       success: true,
       message: "successful",
       user: req.user,
-      //cookies: req.cookies
     });
   } else {
     res.status(401).json({
@@ -24,6 +31,7 @@ router.get("/login/failed", (req, res) => {
     message: "failure",
   });
 });
+
 router.get("/logout", (req, res) => {
   req.logout((err) => { // ✅ Pass a callback function
     if (err) {
@@ -31,12 +39,11 @@ router.get("/logout", (req, res) => {
     }
     req.session.destroy(() => {  // ✅ Destroy session
       res.clearCookie("connect.sid"); // ✅ Clear session cookie
-      res.redirect(CLIENT_URL); // ✅ Redirect to home page
+      res.status(200).json({ message: "Logged out successfully" }); // ✅ Redirect to home page
     });
   });
-
-  res.redirect(CLIENT_URL);
 });
+
 router.get("/google",
   passport.authenticate("google",
     {

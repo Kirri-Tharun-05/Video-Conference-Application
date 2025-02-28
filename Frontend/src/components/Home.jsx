@@ -11,7 +11,7 @@ const Home = () => {
           localStorage.setItem("googleMessage", "true");
         })
         .catch((error) => {
-          console.error("Error:", error);
+          console.warn("Error:", error);
         });
     }
     // For Manual Sign in 

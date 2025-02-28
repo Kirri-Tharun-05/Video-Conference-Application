@@ -8,7 +8,7 @@ const LocalStrategy = require('passport-local');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const authRoute = require("./src/routes/auth")
 const passportSetup = require('./config/passport');
-const httpStatus=require('http-status')
+const httpStatus = require('http-status')
 
 
 const PORT = 8080;
@@ -42,7 +42,7 @@ const sessionOptions = ({
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true
   }
-})
+});
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -50,6 +50,7 @@ app.use(
   cors({
     origin: "http://localhost:5173", // Allow only your frontend origin
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"]
   }
   ));
 app.use(passport.initialize());
@@ -89,7 +90,7 @@ app.post('/signin', async (req, res) => {
 
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
-    if (err) return next(err); 
+    if (err) return next(err);
     if (!user) {  // If authentication fails
       return res.status(httpStatus.status.UNAUTHORIZED).json({ message: "Invalid credentials" });
     }
