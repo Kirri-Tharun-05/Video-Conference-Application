@@ -6,7 +6,7 @@ const meeting = new Schema({
     meetingCode: { type: String },
     data: {
         type: Date,
-        default: Date.now,
+        default: Date.now(),
         required:true
     }
 

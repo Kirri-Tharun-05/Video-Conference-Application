@@ -6,6 +6,7 @@ import SignIn from './components/Signin';
 import LogIn from './components/Login'
 import Home from './components/Home';
 import PageNotFound from './components/PageNotFound';
+import Lobby from './components/Lobby';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/home' element={<Home/>}/>
           <Route path='/signin' element={<SignIn />} />
           <Route path='/login' element={<LogIn />} />
+          <Route path='/:url' element={<Lobby/>}/>
           <Route path="*" element={<PageNotFound/>}/>
         </Routes>
       </div>
