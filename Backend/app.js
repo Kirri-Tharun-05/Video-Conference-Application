@@ -9,7 +9,9 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const authRoute = require("./src/routes/auth")
 const passportSetup = require('./config/passport');
 const httpStatus = require('http-status')
-
+const { createServer } = require('http'); // Add this line
+const server =createServer(app);
+const io=connectionToSocket(server);
 
 const PORT = 8080;
 const mongoose = require('mongoose');
@@ -17,6 +19,7 @@ const User = require('./src/models/user');
 const cors = require('cors');
 const { status } = require('http-status');
 const MongoStore = require('connect-mongo');
+const { connectionToSocket } = require('./src/controllers/sockets');
 
 main()
   .then(() => { console.log('connection successful'); })
