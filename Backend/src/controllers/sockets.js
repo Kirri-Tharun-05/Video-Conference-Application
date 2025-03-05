@@ -15,7 +15,7 @@ const connectionToSocket = (server) => {
     });
 
     io.on('connection', (socket) => {
-
+        console.log('Someone Connected');
         socket.on('join-call', (path) => {
             if (connections[path] === undefined) {
                 connections[path] = [];
@@ -27,7 +27,7 @@ const connectionToSocket = (server) => {
             timeOnline[socket.id] = new Date();
 
             for (let a = 0; a < connections[path].length; a++) {
-                io.to(connections[path][a]).emit('user Joined', socket.id)
+                io.to(connections[path][a]).emit('user-joined', socket.id)
             }
 
             if (messages[path] != undefined) {
