@@ -4,119 +4,82 @@ const server_URL = 'htpp://localhost:8080'
 
 const peerConfigConnections = {
     'iceServers': [
-        { 'urls': 'stun.alltel.com.au:3478' }
+        { 'urls': 'stun:stun.l.google.com:19302' }  // this is a Stun server used to extract the public ip address of the individual 
+        // STUN server are lightweight servers running on the public internet which eturns the IP address of the requester's device. 
     ]
 }
 export default function Lobby() {
-    let socketRef = useRef();
-    let socketIdRef = useRef();
-    let localVideoRef = useRef();
-    let connections = useRef({});
-    const videoRef = useRef([]);
 
+    var socketRef = useRef();
+    let socketIdRef = useRef(); // Refers to current user socket id
 
-    let [videoAvailable, setVideoAvailable] = useState(true);
-    let [audioAvailable, setAudioAvailable] = useState(true);
+    let localVideoRef = useRef(); // current user video
 
-    let [audio, setAudio] = useState();
-    let [video, setVideo] = useState();
-    let [screen, setScreen] = useState();
+    let [videoAvailable, setVideoAvailable] = useState(true); // To store the permission for camara (video).
+    let [audioAvailable, setAudioAvailable] = useState(true); // to store the perrmission for Mic (audio)
 
-    let [showModel, setShowModel] = useState();
-    let [screenAvailable, setScreenAvailable] = useState();
-    let [messages, setMessages] = useState();
-    let [message, setMessage] = useState();
+    let [video, setVideo] = useState(); // we will set the source for the video 
 
-    let [newMessages, setNewMessages] = useState();
+    let [audio, setAudio] = useState();// we will set the source for the audio
+
+    let [screen, setScreen] = useState();// we will set the source for sharing the screen
+
+    let [showModal, setShowModal] = useState();// 
+
+    let [screenAvailable, setScreenAvailable] = useState(); // to set the screen share 
+
+    let [messages, setMessages] = useState([]); // to set all messages
+
+    let [message, setMessage] = useState();// to set the current user message
+
+    let [newMessages, setNewMessages] = useState(0); // Fot the notification of new messages
 
     let [askForUsername, setAskForUsername] = useState(true);
-    let [username, setUsername] = useState();
-    let [videos, setVideos] = useState();
 
+    let [username, setUsername] = useState(); // to set the username
 
-    const getPermissions = async () => {
+    const videoRef = useRef([]) // it will store the references of all videos of users
+
+    let [videos, setVideos] = useState([]); // will store the videos
+
+    const getPermissions = async () => {  // This function is to get the permissions for the video and audio
         try {
-            const videoPermissions = await navigator.mediaDevices.getUserMedia({ video: true })
-            if (videoPermissions) {
+            const videoPermission = await navigator.mediaDevices.getUserMedia({ video: true });
+            if (videoPermission) {
                 setVideoAvailable(true);
             }
             else {
                 setVideoAvailable(false);
             }
-            const audioPermissions = await navigator.mediaDevices.getUserMedia({ audio: true })
-            if (audioPermissions) {
+            
+            const audioPermission = await navigator.mediaDevices.getUserMedia({ audio: true });
+            if (audioPermission) {
                 setAudioAvailable(true);
             }
             else {
                 setAudioAvailable(false);
             }
-
-            if (videoAvailable || audioAvailable) {
-                const userMediaStream = await navigator.mediaDevices.getUserMedia({ video: videoAvailable, audio: audioAvailable });
-                if (userMediaStream) {
-                    window.localStream = userMediaStream;
-                    if (localVideoRef.current) {
-                        localVideoRef.current.srcObject = userMediaStream;
-                    }
-                }
-            }
         } catch (e) {
             console.log(e);
         }
     }
-
-    let getUserMediaSuccess=(stream)=>{
-
-    }
-    let getUserMedia=()=>{
-        if((video && videoAvailable) || (audio && audioAvailable)){
-            navigator.mediaDevices.getUserMedia({video:video,audio:audio})
-            .then(getUserMediaSuccess)//get user mediaSuccess
-            ,then((stream)=>{})
-            .catch((e)=>console.log(e))
-        } else{
-            try{
-                let tracks= localVideoRef.current.srcObject.getTracks();
-                tracks.forEach(track=>track.stop())
-            }
-            catch (e){
-                console.log(e);
-            }
-        }
-    }
     useEffect(() => {
         getPermissions();
-    }, [])
-
-    useEffect(()=>{
-        if(video != undefined && audio!=undefined)
-        {
-            getUserMedia();
-        }
-    },[audio,video])
-    let getmedia=()=>{
-        setVideo(videoAvailable);
-        setAudio(audioAvailable);
-        connectToSocketServer();
-    }
-
+    })
     return (
         <div>
-            {
-                askForUsername === true ?
-                    <div className=''>
-                        <h2>
-                            Meeting Loby
-                        </h2>
-                        <input label='username' value={username} onChange={(e) => { e.target.value }} className='bg-amber-50' ></input>
-                        <button type='button' className='mx-2 py-2 px-10 border border-white '>Connect</button>
-                        <div>
-                            <video ref={localVideoRef} autoPlay muted></video>
-                        </div>
-                    </div> :
-                    <>
-                        <h2>happ</h2></>
-            }
+            {askForUsername === true ? <div>
+                <h2>Enter into Lobby</h2>
+                <label htmlFor="username">Username</label>
+                <input type="text" id='username' style={{ margin: '1rem', backgroundColor: 'white', color: 'white' }} />
+                <button type='button' style={{ backgroundColor: 'gray', padding: '1rem', color: 'black' }}> join</button>
+                <div>
+                    <video ref={localVideoRef} autoPlay muted></video>
+                </div>
+            </div> : <>
+                <h3>Not allowed</h3>
+            </>}
+
         </div>
-    )
+    );
 }
