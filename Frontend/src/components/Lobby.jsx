@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import io from "socket.io-client";
 const server_URL = 'http://localhost:8080'
 
+var connections = {};
 const peerConfigConnections = {
     'iceServers': [
         { 'urls': 'stun:stun.l.google.com:19302' }  // this is a Stun server used to extract the public ip address of the individual 
@@ -18,7 +19,7 @@ export default function Lobby() {
     let [videoAvailable, setVideoAvailable] = useState(true); // To store the permission for camara (video).
     let [audioAvailable, setAudioAvailable] = useState(true); // to store the perrmission for Mic (audio)
 
-    let [video, setVideo] = useState([]); // we will set the source for the video 
+    let [video, setVideo] = useState([]); // to handle video off/on
 
     let [audio, setAudio] = useState();// we will set the source for the audio
 
@@ -38,9 +39,14 @@ export default function Lobby() {
 
     let [username, setUsername] = useState(); // to set the username
 
-    const videoRef = useRef([]) // it will store the references of all videos of users
 
     let [videos, setVideos] = useState([]); // will store the videos
+    // Whenever a new user joins or updates their video stream, setVideos updates the state.
+    // This state will trigger a re-render, ensuring the video elements are updated on the screen.
+
+    const videoRef = useRef([]) //A React ref (useRef) that stores the same list of video streams but does NOT trigger re-renders.
+    //Manually updated whenever videos is updated.
+
 
     const getPermissions = async () => {  // This function is to get the permissions for the video and audio
         try {
@@ -110,33 +116,136 @@ export default function Lobby() {
     }, [audio, video]);
 
     // todo addMessage
-    let addMessage=()=>{
+    let addMessage = () => {
 
+    }
+
+    let gotMessageFromServer = (fromId,message) => {
+        var signal=JSON.parse(message);
+        if(fromId !== socketIdRef.current){ // checking that if the from id is not the current id  (if a user is sending the message then it will check that the sender should not be the current user)
+            if(signal.sdp)
+            {
+                connections[fromId].setRemoteDescription(new RTCSessionDescription(signal.sdp))
+                .then(()=>{
+                    if(signal.sdp.type === 'offer'){
+                        connections[fromId].createAnswer().then((description)=>{
+                            connections[fromId].setLocalDescription(description).then(()=>{
+                                socketIdRef.current.emit('signal',fromId,JSON.stringify({"sdp":connections[fromId].localDescription}))
+                            })
+                        })
+                    }
+                })
+            }
+        }
     }
 
     let connectToSocketServer = () => {
         socketRef.current = io.connect(server_URL, { secure: false });
-        
-        console.log('inside connectToSocketServer : ',socketRef);
 
-        socketRef.current.on('signal',gotMessage);
+        console.log('inside connectToSocketServer : ', socketRef);
 
-        socketRef.current.on('connect',()=>{
-            
-            socketRef.current.emit('join-Call',window.location.href) // sneding path to socket.js server
-            
-            socketIdRef.current= socketRef.current.id;
-            
-            socketRef.current.on('chat-message',addMessage);
+        socketRef.current.on('signal', gotMessageFromServer);
 
-            socketRef.current.on('user-left',(id)=>{
-                setVideo((videos)=>videos.filter((video)=>video.socketId !==id))// We will get all the videos except the user id who left the room
+        socketRef.current.on('connect', () => {
+
+            socketRef.current.emit('join-Call', window.location.href); // sedning path to socket.js server
+
+            socketIdRef.current = socketRef.current.id; //after Connection the socket will get a id
+
+            socketRef.current.on('chat-message', addMessage); // getting the message from server
+
+            socketRef.current.on('user-left', (id) => {
+                setVideos((videos) => videos.filter((video) => video.socketId !== id))// We will get all the videos except the user id who left the room
             })
 
-            socketRef.current.on('user-joined',(id,clients)=>{
-                clients.forEach((socketListId)=>{
-                    // connections[socketListId] = new
+            socketRef.current.on('user-joined', (id, clients) => { // it receives id (the new user's ID) and clients (a list of existing users in the call).
+                clients.forEach((socketListId) => {
+                    connnections[socketListId] = new RTCPeerConnection(peerConfigConnections); //RTCPeerConnection is a WebRTC API that helps in establishing a direct connection between two users for video/audio.
+
+                    connections[socketListId].onicecandidate = (event) => {  // Here ice is a protocal ICE(Intractive Connectivity Establishment)
+                        if (event.candidate !== null) {
+                            socketRef.current.emit('signal', socketListId, JSON.stringify({ 'ice': event.candidate })) // sending the details towards the Signaling Server
+                        }
+                    }
+
+                    connections[socketListId].onaddstream = (event) => {
+                        let videoExists = videoRef.current.find(video => video.socketId === socketListId);
+
+                        // this is how the info will be stored in videoRef
+                        // videoRef.current = [
+                        //     {
+                        //         socketId: "user123",
+                        //         stream: MediaStream {},
+                        //         autoPlay: true,
+                        //         playsinLine: true
+                        //     },
+                        //     {
+                        //         socketId: "user456",
+                        //         stream: MediaStream {},
+                        //         autoPlay: true,
+                        //         playsinLine: true
+                        //     }
+                        // ];
+
+                        // connections[] stores WebRTC connections for each user.
+                        // connections = {
+                        //     "user123": RTCPeerConnection {}, // WebRTC connection for user123
+                        //     "user456": RTCPeerConnection {}, // WebRTC connection for user456
+                        //     "user789": RTCPeerConnection {}  // WebRTC connection for user789
+                        // };
+
+                        // ✔ videoRef.current keeps an updated list of video streams without causing re-renders.
+
+
+                        if (videoExists) {
+                            setVideos(videos => {
+                                const updatedVideos = videos.map(video =>
+                                    video.socketId === socketListId ? { ...video, stream: event.stream } : video
+                                );
+                                videoRef.current = updateVideos;
+                                return updatedVideos;
+                            })
+                        } else {
+                            let newVideo = {
+                                socketId: socketListId,
+                                stream: event.stream,
+                                autoPlay: true,
+                                playsinLine: true
+                            }
+                            setVideos(videos => {
+                                const updatedVideos = [...videos, newVideo];
+                                videoRef.current = updatedVideos;
+                                return updatedVideos;
+                            })
+                        }
+                    }
+
+                    if (window.localStream !== undefined && window.localStream !== null) {
+                        connections[socketListId].addStream(window.localStream);
+                    }
+                    else {
+                        // todo blacksilence
+                    }
                 })
+
+                if (id === socketIdRef.current) {
+                    for (let id2 in connections) {
+                        if (id2 === socketIdRef.current) continue;
+
+                        try{
+                            connections[id2].addStream(window.localStream)
+                        }
+                        catch(e){}
+
+                        connections[id2].createOffer().then((description)=>{
+                            connections[id2].setLocalDescription(description)
+                            .then(()=>{
+                                socketRef.current.emit('signal',id2,JSON.stringify({'sdp':connections[id2].localDescription}))
+                            })
+                            .cathch(e=>console.log(e))
+                        })
+                    }
+                }
             })
         })
     }
@@ -144,7 +253,7 @@ export default function Lobby() {
     let getMedia = () => {
         setVideo(videoAvailable);
         setAudio(audioAvailable);
-        console.log('inside getMedia function : ', video);
+        console.log('inside getMedia function : ', video); // it will give undefined because setVideo and setAudio are asyncronous
         console.log('inside getMedia function : ', videoAvailable);
         console.log('inside getMedia function : ', audio);
         console.log('inside getMedia function : ', audioAvailable);
