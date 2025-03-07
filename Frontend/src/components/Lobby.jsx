@@ -120,21 +120,31 @@ export default function Lobby() {
 
     }
 
-    let gotMessageFromServer = (fromId,message) => {
-        var signal=JSON.parse(message);
-        if(fromId !== socketIdRef.current){ // checking that if the from id is not the current id  (if a user is sending the message then it will check that the sender should not be the current user)
-            if(signal.sdp)
-            {
-                connections[fromId].setRemoteDescription(new RTCSessionDescription(signal.sdp))
-                .then(()=>{
-                    if(signal.sdp.type === 'offer'){
-                        connections[fromId].createAnswer().then((description)=>{
-                            connections[fromId].setLocalDescription(description).then(()=>{
-                                socketIdRef.current.emit('signal',fromId,JSON.stringify({"sdp":connections[fromId].localDescription}))
-                            })
-                        })
-                    }
-                })
+    let gotMessageFromServer = (fromId, message) => {
+        console.log('inside gotMessageFromServer Function : ', message);
+        var signal = JSON.parse(message);
+        console.log('inside gotMessageFromServer Function : ', signal);
+        if (fromId !== socketIdRef.current) {  // Ensure that the message is NOT from the current user (prevents handling own signals)
+            // Local Description → The SDP message they create.
+            // Remote Description → The SDP message they receive from the other peer.
+            // it is like   second user ---> server ----> current user (he recieved a offer)   then      current user(create's a answer) ---> server ---->second user   
+            if (signal.sdp) {
+                connections[fromId].setRemoteDescription(new RTCSessionDescription(signal.sdp)) //If Peer A sends an offer, then for Peer B, that offer is considered remote.
+                    .then(() => {
+                        if (signal.sdp.type === 'offer') { // If the received SDP is an "offer", the other peer (receiver) must create an "answer"
+                            connections[fromId].createAnswer().then((description) => {
+                                console.log("printing the description : ", description);
+                                connections[fromId].setLocalDescription(description).then(() => {
+                                    // Send the answer back to the original peer through the signaling server
+                                    socketIdRef.current.emit('signal', fromId, JSON.stringify({ "sdp": connections[fromId].localDescription })) //sending the answer to the second user who sent the offer
+                                }).catch(e => console.log(e))
+                            }).catch(e => { console.log(e) })
+                        }
+                    }).catch(e => { console.log(e) })
+            }
+
+            if (signal.ice) {
+                connections[fromId].addIceCandidate(new RTCIceCandidate(signal.ice)).catch(e => { console.log(e) });
             }
         }
     }
@@ -232,17 +242,17 @@ export default function Lobby() {
                     for (let id2 in connections) {
                         if (id2 === socketIdRef.current) continue;
 
-                        try{
+                        try {
                             connections[id2].addStream(window.localStream)
                         }
-                        catch(e){}
+                        catch (e) { }
 
-                        connections[id2].createOffer().then((description)=>{
+                        connections[id2].createOffer().then((description) => {
                             connections[id2].setLocalDescription(description)
-                            .then(()=>{
-                                socketRef.current.emit('signal',id2,JSON.stringify({'sdp':connections[id2].localDescription}))
-                            })
-                            .cathch(e=>console.log(e))
+                                .then(() => {
+                                    socketRef.current.emit('signal', id2, JSON.stringify({ 'sdp': connections[id2].localDescription }))
+                                })
+                                .cathch(e => console.log(e))
                         })
                     }
                 }
