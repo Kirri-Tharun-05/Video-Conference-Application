@@ -50,3 +50,14 @@ Summary (Super Simple)
 ✅ When an ICE candidate is found, onicecandidate fires (triggers).
 ✅ The candidate is sent to other users via the signaling server.
 ✅ Other users add the candidate to establish a direct connection.
+
+
+
+
+Working of Silence ()
+
+1. Creates an AudioContext → Manages and processes audio.
+2. Creates an OscillatorNode → Generates a continuous tone.
+3. Connects the oscillator to a MediaStreamDestination → Converts it into a usable media stream.
+4. Starts the oscillator & resumes the context → The oscillator starts producing sound.
+5. Returns an audio track but disables it (enabled: false) → The track is technically present but silent.

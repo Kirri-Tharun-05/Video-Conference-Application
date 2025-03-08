@@ -89,8 +89,70 @@ export default function Lobby() {
     }
 
     let getUserMediaSuccess = (stream) => {
+        try {
+            window.localStream.getTracks().forEach(track => track.stop())
+        } catch (e) { console.log(e) }
 
+        window.localStream = stream;
+        localVideoRef.current.srcObject = stream;
+
+        for (let id in connections) {
+            if (id === socketIdRef.current) continue;
+
+            connections[id].addStream(window.localStream)
+
+            connections[id].createOffer().then((description) => {
+                connections[id].setLocalDescription(description)
+                    .then(() => {
+                        socketRef.current.emit('signal', id, JSON.stringify({ 'sdp': connections[id].localDescription }))
+                    })
+                    .catch(e => console.log(e))
+            })
+
+        }
+        stream.getTracks().forEach(track => track.onended = () => {
+            setVideo(false);
+            setAudio(false);
+
+            try {
+                let tracks = localVideoRef.current.srcObject.getTracks();
+                tracks.forEach(track => track.stop())
+            } catch (e) {
+                console.log(e);
+            }
+
+            // todo BlackSilence
+            let blackSilence = (...args) => new MediaStream([black(...args), silence()]);
+            window.localStream = blackSilence();
+            localVideoRef.current.srcObject = window.localStream;
+
+            for (let id in connections) {
+                connections[id].addStream(window.localStream)
+                connections[id].createOffer().then((description) => {
+                    connections[id].setLocalDescription(description)
+                        .then(() => {
+                            socketRef.current.emit('signal', id, JSON.stringify({ 'sdp': connections[id].localDescription }))
+                        }).cathch(e => { console.log(e) })
+                })
+            }
+        })
     }
+
+    let silence = () => {
+        let context = new AudioContext(); // Creates an audio context
+        let Oscillator = context.createOscillator(); // Generates a continuous tone
+        let destination = Oscillator.connect(context.createMediaStreamDestination()); // Connects to a media stream
+        Oscillator.start(); // Starts generating the sound
+        context.resume(); // Ensures the audio context is running
+        return Object.assign(destination.stream.getAudioTracks()[0], { enabled: false })
+    }
+
+    let black = ({ width = 640, height = 480 } = {}) => {
+        let canvas = Object.assign(document.createElement('canvas'), { width, height })
+        canvas.getContext('2d').fillRect(0, 0, width, height);
+        let stream = canvas.captureStream();
+        return Object.assign(stream.getVideoTracks()[0], { enabled: false })
+    };
 
     let getUserMedia = () => {  // this function is to handle the video and audio controlles
         if ((video && videoAvailable) || (audio && audioAvailable)) {
@@ -121,9 +183,7 @@ export default function Lobby() {
     }
 
     let gotMessageFromServer = (fromId, message) => {
-        console.log('inside gotMessageFromServer Function : ', message);
         var signal = JSON.parse(message);
-        console.log('inside gotMessageFromServer Function : ', signal);
         if (fromId !== socketIdRef.current) {  // Ensure that the message is NOT from the current user (prevents handling own signals)
             // Local Description → The SDP message they create.
             // Remote Description → The SDP message they receive from the other peer.
@@ -136,7 +196,7 @@ export default function Lobby() {
                                 console.log("printing the description : ", description);
                                 connections[fromId].setLocalDescription(description).then(() => {
                                     // Send the answer back to the original peer through the signaling server
-                                    socketIdRef.current.emit('signal', fromId, JSON.stringify({ "sdp": connections[fromId].localDescription })) //sending the answer to the second user who sent the offer
+                                    socketRef.current.emit('signal', fromId, JSON.stringify({ "sdp": connections[fromId].localDescription })) //sending the answer to the second user who sent the offer
                                 }).catch(e => console.log(e))
                             }).catch(e => { console.log(e) })
                         }
@@ -157,8 +217,9 @@ export default function Lobby() {
         socketRef.current.on('signal', gotMessageFromServer);
 
         socketRef.current.on('connect', () => {
+            console.log('Connect is triggered in front end');
 
-            socketRef.current.emit('join-Call', window.location.href); // sedning path to socket.js server
+            socketRef.current.emit('join-call', window.location.href); // sending path to socket.js server
 
             socketIdRef.current = socketRef.current.id; //after Connection the socket will get a id
 
@@ -169,8 +230,9 @@ export default function Lobby() {
             })
 
             socketRef.current.on('user-joined', (id, clients) => { // it receives id (the new user's ID) and clients (a list of existing users in the call).
+                console.log('user Joined : ', id);
                 clients.forEach((socketListId) => {
-                    connnections[socketListId] = new RTCPeerConnection(peerConfigConnections); //RTCPeerConnection is a WebRTC API that helps in establishing a direct connection between two users for video/audio.
+                    connections[socketListId] = new RTCPeerConnection(peerConfigConnections); //RTCPeerConnection is a WebRTC API that helps in establishing a direct connection between two users for video/audio.
 
                     connections[socketListId].onicecandidate = (event) => {  // Here ice is a protocal ICE(Intractive Connectivity Establishment)
                         if (event.candidate !== null) {
@@ -186,6 +248,14 @@ export default function Lobby() {
                         //     {
                         //         socketId: "user123",
                         //         stream: MediaStream {},
+
+                        // here MediaStream ==> MediaStream {
+                        //     id: "random-id",
+                        //     active: true,
+                        //     onaddtrack: null,
+                        //     onremovetrack: null
+                        // }
+
                         //         autoPlay: true,
                         //         playsinLine: true
                         //     },
@@ -212,7 +282,7 @@ export default function Lobby() {
                                 const updatedVideos = videos.map(video =>
                                     video.socketId === socketListId ? { ...video, stream: event.stream } : video
                                 );
-                                videoRef.current = updateVideos;
+                                videoRef.current = updatedVideos;
                                 return updatedVideos;
                             })
                         } else {
@@ -220,10 +290,11 @@ export default function Lobby() {
                                 socketId: socketListId,
                                 stream: event.stream,
                                 autoPlay: true,
-                                playsinLine: true
+                                playsInLine: true
                             }
                             setVideos(videos => {
                                 const updatedVideos = [...videos, newVideo];
+                                console.log("Updated Videos:", updatedVideos);
                                 videoRef.current = updatedVideos;
                                 return updatedVideos;
                             })
@@ -235,6 +306,10 @@ export default function Lobby() {
                     }
                     else {
                         // todo blacksilence
+
+                        let blackSilence = (...args) => new MediaStream([black(...args), silence()]);
+                        window.localStream = blackSilence();
+                        connections[socketListId].addStream(window.localStream);
                     }
                 })
 
@@ -252,7 +327,7 @@ export default function Lobby() {
                                 .then(() => {
                                     socketRef.current.emit('signal', id2, JSON.stringify({ 'sdp': connections[id2].localDescription }))
                                 })
-                                .cathch(e => console.log(e))
+                                .catch(e => console.log(e))
                         })
                     }
                 }
@@ -285,10 +360,23 @@ export default function Lobby() {
                 <div>
                     <video ref={localVideoRef} autoPlay muted></video>
                 </div>
-            </div> : <>
-                <h3>Not allowed</h3>
-            </>}
+            </div> :
+                <div>
+                    <video ref={localVideoRef} autoPlay muted></video>
 
+                    {videos.map((video) => (
+                        <div key={video.socketId}>
+                            <h2 style={{ color: 'white' }}>{video.socketId}</h2>
+                            <video ref={ref => {
+                                if (ref && video.stream) {
+                                    ref.srcObject = video.stream;
+                                }
+                            }} autoPlay></video>
+                        </div>
+                    ))}
+                </div>
+
+            }
         </div>
     );
 }
