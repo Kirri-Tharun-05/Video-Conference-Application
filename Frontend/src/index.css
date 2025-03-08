@@ -2,7 +2,97 @@
 @import "tailwindcss";
 
 
-:root{
-    font-family: 'Poppins', sans-serif;
-    color-scheme: dark;
+:root {
+  font-family: 'Poppins', sans-serif;
+  color-scheme: dark;
+}
+
+.meetVideoContainer {
+  position: relative;
+  align-items: center;
+  min-height: 80vh;
+  background-color: rgb(8, 8, 64);
+  margin-bottom:5rem ;
+}
+.meetUserContainer {
+  position: absolute;
+  bottom: 10vh;
+  height: 25vh;
+  width: auto;
+  border-radius: 1rem;
+  right: 1rem;
+}
+
+.call {
+  width: auto;
+  height: 3rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+}
+
+.mic {
+  filter: invert();
+}
+
+.newmessages {
+  color: white;
+}
+
+
+.chat {
+  position: relative;
+  display: inline-block;
+}
+
+.new-message {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  /* Ensures it stays above the icon */
+}
+
+/* .conferenceContainer{
+  min-width:5rem ;
+  padding: 1rem;
+}
+.conferenceContainer video{
+  border-radius:1rem ;
+} */
+
+@media (max-width: 480px) {
+  .meetVideoContainer{
+    align-items: center;
   }
+  .meetUserContainer {
+    height: 15vh;
+  }
+  .call{
+    height: 2.5rem;
+  }
+  .buttons{
+    gap:1.3rem;
+  }
+}
+
+

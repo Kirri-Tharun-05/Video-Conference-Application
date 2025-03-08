@@ -1,7 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import io from "socket.io-client";
 const server_URL = 'http://localhost:8080'
-
+import redCall from '../logos/Call-red.png'
+import greenCall from '../logos/Call-green.png'
+import micOn from '../logos/micOn.png'
+import micOff from '../logos/micOff.png'
+import screenShare from '../logos/share.png'
+import videoOn from '../logos/video.png'
+import videoOff from '../logos/no-video.png'
+import screenShareStop from '../logos/screen.png'
+import chat from '../logos/chat.png'
 var connections = {};
 const peerConfigConnections = {
     'iceServers': [
@@ -169,7 +177,7 @@ export default function Lobby() {
     }
     useEffect(() => {
         getPermissions();
-    })
+    }, [])
 
     useEffect(() => {
         if (video !== undefined && audio !== undefined) {
@@ -350,6 +358,71 @@ export default function Lobby() {
         getMedia();
     }
 
+    let handleVideo = () => {
+        setVideo(!video);
+    }
+    let handleAudio = () => {
+        setAudio(!audio);
+    }
+    let getDisplayMediaSuccess=(stream)=>{
+        try{
+            window.localStream.getTracks().forEach(tracks=>tracks.stop())
+        }catch(e) {console.log(e)}
+
+        window.localStream=stream;
+        localVideoRef.current.srcObject=stream;
+
+        for(let id in connections)
+        {
+            if(id===socketIdRef.current) continue;
+
+            connections[id].addStream(window.localStream);
+            connections[id].createOffer().then((description)=>[
+                connections[id].setLocalDescription(description).then(()=>{
+                    socket.emit('signal',JSON.stringify({'sdp':connections[id].localDescription}))
+                })
+                .catch(e=>console.log(e))
+            ])
+        }
+        stream.getTracks().forEach(track => track.onended = () => {
+            setScreen(false);
+
+            try {
+                let tracks = localVideoRef.current.srcObject.getTracks();
+                tracks.forEach(track => track.stop())
+            } catch (e) {
+                console.log(e);
+            }
+
+            // todo BlackSilence
+            let blackSilence = (...args) => new MediaStream([black(...args), silence()]);
+            window.localStream = blackSilence();
+            localVideoRef.current.srcObject = window.localStream;
+
+            getUserMedia();
+        })
+    }
+
+    let getDisplayMedia = () => {
+        if (screen) {
+            if (navigator.mediaDevices.getDisplayMedia) {
+                navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+                .then(getDisplayMediaSuccess)
+                .then((stream)=>{})
+                .catch((e)=>{console.log(e)})
+            }
+        }
+    }
+    useEffect(() => {
+        if (screen !== undefined) {
+            getDisplayMedia();
+        }
+
+    }, [screen])
+    let handleScreen = () => {
+        setScreen(!screen);
+    }
+
     return (
         <div>
             {askForUsername === true ? <div>
@@ -361,19 +434,34 @@ export default function Lobby() {
                     <video ref={localVideoRef} autoPlay muted></video>
                 </div>
             </div> :
-                <div>
-                    <video ref={localVideoRef} autoPlay muted></video>
+                <div className='meetVideoContainer flex justify-center'>
+                    <video ref={localVideoRef} autoPlay muted className='meetUserContainer'></video>
+                    <div className='conference pb-15 flex flex-wrap justify-center '>
+                        {videos.map((video) => (
+                            <div key={video.socketId} className='conferenceContainer w-full lg:w-1/2 '>
+                                <h2 style={{ color: 'white' }}>{video.socketId}</h2>
+                                <video ref={ref => {
+                                    if (ref && video.stream) {
+                                        ref.srcObject = video.stream;
+                                    }
+                                }} autoPlay className='p-5 rounded-4xl'></video>
+                            </div>
+                        ))}
+                    </div>
 
-                    {videos.map((video) => (
-                        <div key={video.socketId}>
-                            <h2 style={{ color: 'white' }}>{video.socketId}</h2>
-                            <video ref={ref => {
-                                if (ref && video.stream) {
-                                    ref.srcObject = video.stream;
-                                }
-                            }} autoPlay></video>
+                    <div className="buttons" >
+                        {video === true ? <img src={videoOn} alt="" className='mic call' onClick={handleVideo} style={{ cursor: 'pointer' }} /> : <img src={videoOff} alt="" className='mic call' style={{ cursor: 'pointer' }} onClick={handleVideo} />}
+                        {audio === true ? <img src={micOn} alt="" className='mic call' onClick={handleAudio} style={{ cursor: 'pointer' }} /> : <img src={micOff} alt="" className='mic call mic-off' style={{ cursor: 'pointer' }} onClick={handleAudio} />}
+                        <img src={redCall} alt="" className='call' style={{ cursor: 'pointer' }} />
+                        {/* <img src={greenCall} alt="" className='call' />  */}
+                        {screenAvailable === true ? (screen == true ? <img src={screenShare} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen}/> : <img src={screenShareStop} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen}/>) : <></>}
+                        <div className='chat'>
+                            <img src={chat} alt="" className='call mic chat-img' style={{ cursor: 'pointer' }} />
+                            <div className='new-message'>
+                                <p className='newMessages'>{newMessages}</p>
+                            </div>
                         </div>
-                    ))}
+                    </div>
                 </div>
 
             }
