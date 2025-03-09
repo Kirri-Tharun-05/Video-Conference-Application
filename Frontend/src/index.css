@@ -149,11 +149,14 @@
 }
 
 @media (max-width: 480px) {
+  .min-video{
+    height: 10vh;
+  }
   .meetVideoContainer {
     align-items: center;
   }
 
-  .meetUserContainer {
+  .max-video {
     height: 15vh;
   }
 
@@ -163,5 +166,12 @@
 
   .buttons {
     gap: 1.3rem;
+  }
+}
+
+@media(min-width:600px)
+{
+  .meetUserContainer{
+    height: 16vh;
   }
 }

@@ -187,8 +187,14 @@ export default function Lobby() {
     }, [audio, video]);
 
     // todo addMessage
-    let addMessage = () => {
+    let addMessage = (data, sender, socketIdSender) => {
+        setMessages((prevMessages) => [
+            ...prevMessages, { sender: sender, data: data }
+        ]);
 
+        if(socketIdSender!==socketIdRef.current){
+            setNewMessages((prevMessages)=>prevMessages+1);
+        }
     }
 
     let gotMessageFromServer = (fromId, message) => {
@@ -427,9 +433,10 @@ export default function Lobby() {
     let handleChatBar = () => {
         setChatBar(!chatBar);
     }
-    useEffect(() => {
-        console.log("Total videos:", videos.length);
-    }, [videos]);
+    let sendMessage = (message) => {
+        socketRef.current.emit('chat-message', message, username);
+        setMessage('');
+    }
     return (
         <div>
             {askForUsername === true ? <div>
@@ -445,16 +452,17 @@ export default function Lobby() {
 
                     <div className={`Chat-Bar w-2xs ${chatBar ? 'show' : 'hide'}`}>
                         <p className='text-3xl text-black underline'>Chat-Box</p>
+                        <p style={{ color: 'black' }}>{message}</p>
                         <div className='messageBox'>
-                            <input type="text" placeholder='Type your message' />
+                            <input type="text" placeholder='Type your message' onChange={e => setMessage(e.target.value)} />
                             <button >Send</button>
                         </div>
                     </div>
 
-                    <video ref={localVideoRef} autoPlay muted className={`meetUserContainer ${chatBar ? 'shift-left' : ''}`}></video>
+                    <video ref={localVideoRef} autoPlay muted className={`meetUserContainer ${chatBar ? 'shift-left' : ''} ${videos.length >= 2 ? 'min-video' : 'max-video'}`}></video>
                     <div className='conference pb-15 flex flex-wrap justify-center '>
                         {videos.map((video) => (
-                            <div key={video.socketId} className='conferenceContainer w-full lg:w-1/2 '>
+                            <div key={video.socketId} className='conferenceContainer w-full sm:w-1/2 lg:w-1/2 '>
                                 <h2 style={{ color: 'white' }}>{video.socketId}</h2>
                                 <video ref={ref => {
                                     if (ref && video.stream) {
