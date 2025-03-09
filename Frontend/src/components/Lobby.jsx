@@ -47,6 +47,7 @@ export default function Lobby() {
 
     let [username, setUsername] = useState(); // to set the username
 
+    let [chatBar, setChatBar] = useState(false);
 
     let [videos, setVideos] = useState([]); // will store the videos
     // Whenever a new user joins or updates their video stream, setVideos updates the state.
@@ -240,6 +241,8 @@ export default function Lobby() {
             socketRef.current.on('user-joined', (id, clients) => { // it receives id (the new user's ID) and clients (a list of existing users in the call).
                 console.log('user Joined : ', id);
                 clients.forEach((socketListId) => {
+
+
                     connections[socketListId] = new RTCPeerConnection(peerConfigConnections); //RTCPeerConnection is a WebRTC API that helps in establishing a direct connection between two users for video/audio.
 
                     connections[socketListId].onicecandidate = (event) => {  // Here ice is a protocal ICE(Intractive Connectivity Establishment)
@@ -364,24 +367,23 @@ export default function Lobby() {
     let handleAudio = () => {
         setAudio(!audio);
     }
-    let getDisplayMediaSuccess=(stream)=>{
-        try{
-            window.localStream.getTracks().forEach(tracks=>tracks.stop())
-        }catch(e) {console.log(e)}
+    let getDisplayMediaSuccess = (stream) => {
+        try {
+            window.localStream.getTracks().forEach(tracks => tracks.stop())
+        } catch (e) { console.log(e) }
 
-        window.localStream=stream;
-        localVideoRef.current.srcObject=stream;
+        window.localStream = stream;
+        localVideoRef.current.srcObject = stream;
 
-        for(let id in connections)
-        {
-            if(id===socketIdRef.current) continue;
+        for (let id in connections) {
+            if (id === socketIdRef.current) continue;
 
             connections[id].addStream(window.localStream);
-            connections[id].createOffer().then((description)=>[
-                connections[id].setLocalDescription(description).then(()=>{
-                    socket.emit('signal',JSON.stringify({'sdp':connections[id].localDescription}))
+            connections[id].createOffer().then((description) => [
+                connections[id].setLocalDescription(description).then(() => {
+                    socketRef.current.emit('signal', JSON.stringify({ 'sdp': connections[id].localDescription }))
                 })
-                .catch(e=>console.log(e))
+                    .catch(e => console.log(e))
             ])
         }
         stream.getTracks().forEach(track => track.onended = () => {
@@ -407,9 +409,9 @@ export default function Lobby() {
         if (screen) {
             if (navigator.mediaDevices.getDisplayMedia) {
                 navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
-                .then(getDisplayMediaSuccess)
-                .then((stream)=>{})
-                .catch((e)=>{console.log(e)})
+                    .then(getDisplayMediaSuccess)
+                    .then((stream) => { })
+                    .catch((e) => { console.log(e) })
             }
         }
     }
@@ -422,7 +424,12 @@ export default function Lobby() {
     let handleScreen = () => {
         setScreen(!screen);
     }
-
+    let handleChatBar = () => {
+        setChatBar(!chatBar);
+    }
+    useEffect(() => {
+        console.log("Total videos:", videos.length);
+    }, [videos]);
     return (
         <div>
             {askForUsername === true ? <div>
@@ -434,8 +441,17 @@ export default function Lobby() {
                     <video ref={localVideoRef} autoPlay muted></video>
                 </div>
             </div> :
-                <div className='meetVideoContainer flex justify-center'>
-                    <video ref={localVideoRef} autoPlay muted className='meetUserContainer'></video>
+                <div className='meetVideoContainer flex justify-center overflow-hidden'>
+
+                    <div className={`Chat-Bar w-2xs ${chatBar ? 'show' : 'hide'}`}>
+                        <p className='text-3xl text-black underline'>Chat-Box</p>
+                        <div className='messageBox'>
+                            <input type="text" placeholder='Type your message' />
+                            <button >Send</button>
+                        </div>
+                    </div>
+
+                    <video ref={localVideoRef} autoPlay muted className={`meetUserContainer ${chatBar ? 'shift-left' : ''}`}></video>
                     <div className='conference pb-15 flex flex-wrap justify-center '>
                         {videos.map((video) => (
                             <div key={video.socketId} className='conferenceContainer w-full lg:w-1/2 '>
@@ -454,9 +470,9 @@ export default function Lobby() {
                         {audio === true ? <img src={micOn} alt="" className='mic call' onClick={handleAudio} style={{ cursor: 'pointer' }} /> : <img src={micOff} alt="" className='mic call mic-off' style={{ cursor: 'pointer' }} onClick={handleAudio} />}
                         <img src={redCall} alt="" className='call' style={{ cursor: 'pointer' }} />
                         {/* <img src={greenCall} alt="" className='call' />  */}
-                        {screenAvailable === true ? (screen == true ? <img src={screenShare} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen}/> : <img src={screenShareStop} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen}/>) : <></>}
+                        {screenAvailable === true ? (screen == true ? <img src={screenShare} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen} /> : <img src={screenShareStop} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen} />) : <></>}
                         <div className='chat'>
-                            <img src={chat} alt="" className='call mic chat-img' style={{ cursor: 'pointer' }} />
+                            <img src={chat} alt="" className='call mic chat-img' style={{ cursor: 'pointer' }} onClick={handleChatBar} />
                             <div className='new-message'>
                                 <p className='newMessages'>{newMessages}</p>
                             </div>
