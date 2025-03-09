@@ -192,8 +192,8 @@ export default function Lobby() {
             ...prevMessages, { sender: sender, data: data }
         ]);
 
-        if(socketIdSender!==socketIdRef.current){
-            setNewMessages((prevMessages)=>prevMessages+1);
+        if (socketIdSender !== socketIdRef.current) {
+            setNewMessages((prevMessages) => prevMessages + 1);
         }
     }
 
@@ -433,7 +433,7 @@ export default function Lobby() {
     let handleChatBar = () => {
         setChatBar(!chatBar);
     }
-    let sendMessage = (message) => {
+    let sendMessage = () => {
         socketRef.current.emit('chat-message', message, username);
         setMessage('');
     }
@@ -449,13 +449,21 @@ export default function Lobby() {
                 </div>
             </div> :
                 <div className='meetVideoContainer flex justify-center overflow-hidden'>
-
                     <div className={`Chat-Bar w-2xs ${chatBar ? 'show' : 'hide'}`}>
                         <p className='text-3xl text-black underline'>Chat-Box</p>
-                        <p style={{ color: 'black' }}>{message}</p>
+                        <div>
+                            {messages.map((item, index) => {
+                                return (
+                                    <div key={index}>
+                                        <p className='font-bold bg-amber-600 '>{item.sender}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
                         <div className='messageBox'>
                             <input type="text" placeholder='Type your message' onChange={e => setMessage(e.target.value)} />
-                            <button >Send</button>
+                            <button type='submit' onClick={sendMessage} >Send</button>
                         </div>
                     </div>
 
@@ -487,7 +495,6 @@ export default function Lobby() {
                         </div>
                     </div>
                 </div>
-
             }
         </div>
     );

@@ -62,7 +62,7 @@ const connectionToSocket = (server) => {
             if (matchingRoom) {
                 messages[matchingRoom] = messages[matchingRoom] || [];
                 messages[matchingRoom].push({ 'data': data, 'sender': sender, 'socket-id-sender': socket.id }) // here we are storing the message data in messages[]
-                console.log('message', key, ':', sender, data); // can occur error due to key
+                console.log('message', matchingRoom, ':', sender, data); // can occur error due to key
 
                 connections[matchingRoom].forEach(user => {
                     io.to(user).emit('chat-message', data, sender, socket.id); // Now we are sending incomming messages to all users that we have stored in messages[]               
