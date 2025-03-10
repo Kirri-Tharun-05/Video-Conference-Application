@@ -5,31 +5,36 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 const Navbar = () => {
   const [currUser, setCurrUser] = useState(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get("http://localhost:8080/auth/user", {
-          withCredentials: true, // ✅ Required for cookies
-        });
-        setCurrUser(res.data); // ✅ Set user state
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          console.warn("User not authenticated"); 
-          setCurrUser(null); // ✅ Make sure to set user as null
-        } else{
-          console.error("Error fetching user:", error);
-        }
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/auth/user", {
+        withCredentials: true, // ✅ Required for cookies
+      });
+      setCurrUser(res.data); // ✅ Set user state
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.warn("User not authenticated");
+        setCurrUser(null); // ✅ Make sure to set user as null
+      } else {
+        console.error("Error fetching user:", error);
       }
-    };
-
+    }
+  };
+  
+  useEffect(() => {
     fetchUser();
-  }, [currUser]);
+  }, []);
+  
+  useEffect(() => {
+    window.addEventListener("userLoggedIn", fetchUser);
+    return () => window.removeEventListener("userLoggedIn", fetchUser);
+  }, []);
+
   const handleLogout = async () => {
     try {
       let result = await axios.get("http://localhost:8080/auth/logout", { withCredentials: true }); // Inform backend
-      console.log("Fron navbar : ", result);
       localStorage.removeItem("googleMessage"); // Remove stored message
       toast.success(result.data.message);
       setCurrUser(null);

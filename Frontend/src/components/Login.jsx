@@ -11,10 +11,10 @@ const Login = () => {
     e.preventDefault();
     try{
       const result= await axios.post('http://localhost:8080/login',{
-        username,password
-      })
+        username,password },{ withCredentials: true })
       console.log(result);
       localStorage.setItem('flashMessage', result.data.message);
+      window.dispatchEvent(new Event("userLoggedIn"));
       navigate('/home')
     }
     catch(e){
