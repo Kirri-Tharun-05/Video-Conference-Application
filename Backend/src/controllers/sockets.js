@@ -48,6 +48,7 @@ const connectionToSocket = (server) => {
         })
 
         socket.on('chat-message', (data, sender) => {
+            console.log('inside socket.js for message')
             // Basically a user will send a message 
             // now we will find the room id of the user who sent the message
             // here includes() method will check the socket.id whether its present in the roomKey or not

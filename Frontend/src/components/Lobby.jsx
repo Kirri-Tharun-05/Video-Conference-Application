@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState,useNavigate } from 'react'
 import io from "socket.io-client";
 const server_URL = 'http://localhost:8080'
 import redCall from '../logos/Call-red.png'
@@ -23,7 +23,7 @@ export default function Lobby() {
     let socketIdRef = useRef(); // Refers to current user socket id
 
     let localVideoRef = useRef(); // current user video
-
+    let routeTo =useNavigate();
     let [videoAvailable, setVideoAvailable] = useState(true); // To store the permission for camara (video).
     let [audioAvailable, setAudioAvailable] = useState(true); // to store the perrmission for Mic (audio)
 
@@ -188,6 +188,7 @@ export default function Lobby() {
 
     // todo addMessage
     let addMessage = (data, sender, socketIdSender) => {
+        console.log(data,':',sender,':',socketIdSender);
         setMessages((prevMessages) => [
             ...prevMessages, { sender: sender, data: data }
         ]);
@@ -437,13 +438,21 @@ export default function Lobby() {
         socketRef.current.emit('chat-message', message, username);
         setMessage('');
     }
+    let handleEndCall=()=>{
+        try{
+            let tracks= localVideoRef.current.srcObject.getTracks();
+            tracks.forEach((track)=>{track.stop()})
+        }   
+        catch(e){console.log(e)}
+        routeTo('/home');
+    }
     return (
         <div>
             {askForUsername === true ? <div>
                 <h2>Enter into Lobby</h2>
                 <label htmlFor="username">Username</label>
-                <input type="text" id='username' style={{ margin: '1rem', backgroundColor: 'white', color: 'black' }} />
-                <button type='button' style={{ backgroundColor: 'gray', padding: '1rem', color: 'black' }} onClick={connect}> join</button>
+                <input type="text" id='username' style={{ margin: '1rem', backgroundColor: 'white', color: 'black' }} onChange={e=>{setUsername(e.target.value)}}/>
+                <button type='button' style={{ backgroundColor: 'gray', padding: '1rem', color: 'black' }} onClick={connect}>join</button>
                 <div>
                     <video ref={localVideoRef} autoPlay muted></video>
                 </div>
@@ -452,10 +461,14 @@ export default function Lobby() {
                     <div className={`Chat-Bar w-2xs ${chatBar ? 'show' : 'hide'}`}>
                         <p className='text-3xl text-black underline'>Chat-Box</p>
                         <div>
+                            <p style={{color:'black'}}>{message}</p>
                             {messages.map((item, index) => {
                                 return (
-                                    <div key={index}>
+                                    <div key={index} className='overflow-x-auto'>
                                         <p className='font-bold bg-amber-600 '>{item.sender}</p>
+                                        <p className='font-bold bg-amber-600 '>{item.data}</p>
+                                        
+                                        {console.log(item.sender)}
                                     </div>
                                 );
                             })}
@@ -484,7 +497,7 @@ export default function Lobby() {
                     <div className="buttons" >
                         {video === true ? <img src={videoOn} alt="" className='mic call' onClick={handleVideo} style={{ cursor: 'pointer' }} /> : <img src={videoOff} alt="" className='mic call' style={{ cursor: 'pointer' }} onClick={handleVideo} />}
                         {audio === true ? <img src={micOn} alt="" className='mic call' onClick={handleAudio} style={{ cursor: 'pointer' }} /> : <img src={micOff} alt="" className='mic call mic-off' style={{ cursor: 'pointer' }} onClick={handleAudio} />}
-                        <img src={redCall} alt="" className='call' style={{ cursor: 'pointer' }} />
+                        <img src={redCall} alt="" className='call' style={{ cursor: 'pointer' }} onClick={handleEndCall}/>
                         {/* <img src={greenCall} alt="" className='call' />  */}
                         {screenAvailable === true ? (screen == true ? <img src={screenShare} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen} /> : <img src={screenShareStop} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen} />) : <></>}
                         <div className='chat'>
