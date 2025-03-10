@@ -1,6 +1,10 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { toast } from 'react-toastify';
+// import videoCall from '../logos/videoCall.jpg';
+// import { motion } from 'framer-motion';
+import { Hero } from './Landing_Page/Hero';
+import { Features } from './Landing_Page/Features';
 const Home = () => {
   useEffect(() => {
     // For google.signin
@@ -8,12 +12,13 @@ const Home = () => {
       axios.get("http://localhost:8080/auth/login/success", { withCredentials: true })
         .then((response) => {
           toast.success(response.data.message);
-          localStorage.setItem("googleMessage", "true");
+          localStorage.setItem("googleMessage", true);
         })
         .catch((error) => {
           console.warn("Error:", error);
         });
     }
+
     // For Manual Sign in 
     const message = localStorage.getItem('flashMessage'); // ✅ Retrieve from localStorage
     if (message) {
@@ -23,7 +28,10 @@ const Home = () => {
 
   }, []);
   return (
-    <div>Home</div>
+    <div className="">
+      <Hero />
+      {/* <Features/> */}
+    </div>
   )
 }
 

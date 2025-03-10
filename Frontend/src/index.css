@@ -148,6 +148,15 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+
+.getStarted{
+  font-size: larger;
+  font-weight: 500;
+  border: 2px solid white;
+  border-radius: 0.5rem;
+  width: fit-content;
+}
+
 @media (max-width: 480px) {
   .min-video{
     height: 10vh;
