@@ -3,7 +3,10 @@
 
 
 :root {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Iansui", cursive;
+  font-weight: 400;
+  font-style: normal;
+  /* font-family: 'Poppins', sans-serif; */
   color-scheme: dark;
 }
 
@@ -157,6 +160,30 @@
   width: fit-content;
 }
 
+.content{
+  z-index: 1;
+}
+
+.card{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding:0.5rem 2rem;
+  border-radius: 0.3rem;
+  margin: 1rem;
+  height: auto;
+}
+.expand{
+  width: 100%;  /* Ensures it takes the full width of the parent */
+  max-width: 30rem;  /* Prevents it from getting too wide */
+  overflow-wrap: break-word; 
+}
+
+.texttitle{
+  display:flex;
+  justify-content: center;
+}
 @media (max-width: 480px) {
   .min-video{
     height: 10vh;

@@ -8,7 +8,7 @@ import Home from './components/Home';
 import Room from './components/Room';
 import PageNotFound from './components/PageNotFound';
 import Lobby from './components/Lobby';
-
+import { Features } from './components/Landing_Page/Features';
 
 function App() {
   return (
@@ -21,6 +21,7 @@ function App() {
           <Route path='/login' element={<LogIn />} />
           <Route path='/Room' element={<Room />} />
           <Route path='/Room/:url' element={<Lobby/>}/>
+          <Route path='/features' element={<Features/>}/>
           <Route path="*" element={<PageNotFound/>}/>
         </Routes>
       </div>

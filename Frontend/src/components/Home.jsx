@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <div className="">
       <Hero />
-      {/* <Features/> */}
+      <Features/>
     </div>
   )
 }
