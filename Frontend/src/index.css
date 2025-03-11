@@ -202,13 +202,17 @@
   padding: 0.5rem 1rem;
   font-size: 1.3rem;
   font-weight: 600;
-  width: 10rem;
+  width: 13rem;
 }
 
 .roomId::placeholder {
   font-weight: 800;
   color: gray;
   opacity: 1;
+}
+
+.animation{
+  height: 30rem;
 }
 
 @media (max-width: 480px) {

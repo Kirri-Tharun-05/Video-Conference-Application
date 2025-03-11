@@ -5,6 +5,7 @@ const User= require('../models/user');
 
 router.get('/user',(req,res)=>{
     if(req.user){
+      console.log('inside auth.js')
       console.log(req.user);
       res.status(200).json(req.user);
     }

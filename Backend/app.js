@@ -19,8 +19,8 @@ const { status } = require('http-status');
 const MongoStore = require('connect-mongo');
 
 const { connectionToSocket } = require('./src/controllers/sockets');
-const server =createServer(app);
-const io=connectionToSocket(server);
+const server = createServer(app);
+const io = connectionToSocket(server);
 
 main()
   .then(() => { console.log('connection successful'); })
@@ -103,6 +103,34 @@ app.post('/login', (req, res, next) => {
       return res.status(httpStatus.status.OK).json({ message: "Successfully Logged In", user });
     });
   })(req, res, next);
+});
+
+
+app.get("/api/user", async (req, res) => {
+  console.log("🔥 `/api/user` route triggered!");
+  console.log("🔍 Session data:", req.session);
+
+  // Check if user is authenticated
+  if (!req.session.passport || !req.session.passport.user) {
+    console.log("❌ No user found in session!");
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    // Fetch user from database using stored user ID
+    const user = await User.findById(req.session.passport.user);
+    
+    if (!user) {
+      console.log("❌ User not found in database!");
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    console.log("✅ User found:", user);
+    res.json({ name: user.username}); // Adjust according to your schema
+  } catch (error) {
+    console.error("❌ Error fetching user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 server.listen(PORT, (req, res) => {
