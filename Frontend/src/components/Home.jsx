@@ -3,8 +3,8 @@ import React, { useEffect } from 'react'
 import { toast } from 'react-toastify';
 // import videoCall from '../logos/videoCall.jpg';
 // import { motion } from 'framer-motion';
-import { Hero } from './Landing_Page/Hero';
-import { Features } from './Landing_Page/Features';
+import { Hero } from './Landing_Page/Hero.jsx';
+import Features from './Landing_Page/Features.jsx';
 const Home = () => {
   useEffect(() => {
     // For google.signin
@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <div className="">
       <Hero />
-      <Features/>
+      <Features />
     </div>
   )
 }

@@ -5,7 +5,7 @@ import animation2 from '../../assets/animation2.json'
 import animation3 from '../../assets/animation3.json'
 import Card from './Card.jsx'
 import cardContent from './features.js';
-export const Features = () => {
+const Features = () => {
   return (
     <div className='my-20 flex flex-col items-center'>
       <h1 className='text-5xl text-center '>Powerful Features for Seamless <br />Communication</h1>
@@ -22,3 +22,4 @@ export const Features = () => {
     </div>
   )
 }
+export default Features;

@@ -24,7 +24,7 @@ export default function Lobby() {
     let socketIdRef = useRef(); // Refers to current user socket id
 
     let localVideoRef = useRef(); // current user video
-    let routeTo =useNavigate();
+    let routeTo = useNavigate();
     let [videoAvailable, setVideoAvailable] = useState(true); // To store the permission for camara (video).
     let [audioAvailable, setAudioAvailable] = useState(true); // to store the perrmission for Mic (audio)
 
@@ -189,7 +189,7 @@ export default function Lobby() {
 
     // todo addMessage
     let addMessage = (data, sender, socketIdSender) => {
-        console.log(data,':',sender,':',socketIdSender);
+        console.log(data, ':', sender, ':', socketIdSender);
         setMessages((prevMessages) => [
             ...prevMessages, { sender: sender, data: data }
         ]);
@@ -439,36 +439,41 @@ export default function Lobby() {
         socketRef.current.emit('chat-message', message, username);
         setMessage('');
     }
-    let handleEndCall=()=>{
-        try{
-            let tracks= localVideoRef.current.srcObject.getTracks();
-            tracks.forEach((track)=>{track.stop()})
-        }   
-        catch(e){console.log(e)}
+    let handleEndCall = () => {
+        try {
+            let tracks = localVideoRef.current.srcObject.getTracks();
+            tracks.forEach((track) => { track.stop() })
+            localVideoRef.current.srcObject = null;
+        }
+        catch (e) { console.log(e) }
         routeTo('/home');
     }
     return (
         <div>
-            {askForUsername === true ? <div>
-                <h2>Enter into Lobby</h2>
-                <label htmlFor="username">Username</label>
-                <input type="text" id='username' style={{ margin: '1rem', backgroundColor: 'white', color: 'black' }} onChange={e=>{setUsername(e.target.value)}}/>
-                <button type='button' style={{ backgroundColor: 'gray', padding: '1rem', color: 'black' }} onClick={connect}>join</button>
+            {askForUsername === true ? <div className='grid grid-cols-1 sm:grid-cols-2 px-10 items-center '>
+                
+                <div className="">
+                    <label htmlFor="username">Username</label>
+                    <input type="text" id='username' style={{ margin: '1rem', backgroundColor: 'white', color: 'black' }} onChange={e => { setUsername(e.target.value) }} />
+                    <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={connect}>
+                        Join
+                    </button>
+                </div>
                 <div>
-                    <video ref={localVideoRef} autoPlay muted></video>
+                    <video ref={localVideoRef} autoPlay muted className='rounded-2xl drop-shadow-2xl'></video>
                 </div>
             </div> :
                 <div className='meetVideoContainer flex justify-center overflow-hidden'>
                     <div className={`Chat-Bar w-2xs ${chatBar ? 'show' : 'hide'}`}>
                         <p className='text-3xl text-black underline'>Chat-Box</p>
                         <div>
-                            <p style={{color:'black'}}>{message}</p>
+                            <p style={{ color: 'black' }}>{message}</p>
                             {messages.map((item, index) => {
                                 return (
                                     <div key={index} className='overflow-x-auto'>
                                         <p className='font-bold bg-amber-600 '>{item.sender}</p>
                                         <p className='font-bold bg-amber-600 '>{item.data}</p>
-                                        
+
                                         {console.log(item.sender)}
                                     </div>
                                 );
@@ -498,7 +503,7 @@ export default function Lobby() {
                     <div className="buttons" >
                         {video === true ? <img src={videoOn} alt="" className='mic call' onClick={handleVideo} style={{ cursor: 'pointer' }} /> : <img src={videoOff} alt="" className='mic call' style={{ cursor: 'pointer' }} onClick={handleVideo} />}
                         {audio === true ? <img src={micOn} alt="" className='mic call' onClick={handleAudio} style={{ cursor: 'pointer' }} /> : <img src={micOff} alt="" className='mic call mic-off' style={{ cursor: 'pointer' }} onClick={handleAudio} />}
-                        <img src={redCall} alt="" className='call' style={{ cursor: 'pointer' }} onClick={handleEndCall}/>
+                        <img src={redCall} alt="" className='call' style={{ cursor: 'pointer' }} onClick={handleEndCall} />
                         {/* <img src={greenCall} alt="" className='call' />  */}
                         {screenAvailable === true ? (screen == true ? <img src={screenShare} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen} /> : <img src={screenShareStop} alt="" className='call mic' style={{ cursor: 'pointer' }} onClick={handleScreen} />) : <></>}
                         <div className='chat'>

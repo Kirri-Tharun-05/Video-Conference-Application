@@ -1,14 +1,20 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import isAuth from '../utils/isAuth'
 import Lottie from 'lottie-react'
 import axios from 'axios';
 import animation2 from '../assets/animation2.json'
+import { toast } from 'react-toastify';
 function Room() {
   const navigate = useNavigate();
   const [roomID, setRoomId] = useState();
   const handleClick = () => {
-    navigate(`/Room/${roomID}`);
+    if(roomID!=null)
+    {
+      navigate(`/Room/${roomID}`);
+    }else{
+      toast.warning('Enter Room Id');
+    }
   }
   const [userName, setUserName] = useState("Guest");
 
@@ -25,8 +31,10 @@ function Room() {
         <div>
           <h1 className='text-3xl'>Hello {userName}!</h1>
           <h1 className='text-2xl'>Type Your Room Id</h1>
-          <input type="text" name="" id="" placeholder='Enter Room Id' onChange={e => setRoomId(e.target.value)} className='roomId'/>
-          <button type='button' onClick={handleClick}>Join</button>
+          <input type="text" name="" id="" placeholder='Enter Room Id' onChange={e => setRoomId(e.target.value)} className='roomId' required/>
+          <button  type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
+            Join
+          </button>
         </div>
         <div>
           <Lottie animationData={animation2} className='animation' />

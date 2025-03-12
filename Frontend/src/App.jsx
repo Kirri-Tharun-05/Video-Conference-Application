@@ -8,7 +8,7 @@ import Home from './components/Home';
 import Room from './components/Room';
 import PageNotFound from './components/PageNotFound';
 import Lobby from './components/Lobby';
-import { Features } from './components/Landing_Page/Features';
+import  Features  from './components/Landing_Page/Features.jsx';
 
 function App() {
   return (
