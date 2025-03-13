@@ -1,6 +1,9 @@
-import Meeting from '../models/meeting';
-import User from '../models/user.js'
-import httpStatus from 'http-status'
+const Meeting = require('../models/meeting');
+const User = require('../models/user.js');
+const httpsStatus = require('http-status');
+const router = require("express").Router();
+
+
 const getUserHistory = async (req, res) => {
     try {
         const user = await User.findById(req.session.passport.user);
@@ -12,18 +15,21 @@ const getUserHistory = async (req, res) => {
     }
 }
 
-const addToHistory=async (req,res)=>{
-    const {meeting_code}=req.body;
-    try{
-        const user= await User.findById(req.session.passport.user);
-        const newMeeting= new Meeting ({
-            user_id:user.username,
-            meeting_code:meeting_code
+const addToHistory = async (req, res) => {
+    const { meeting_code } = req.body;
+    try {
+        const user = await User.findById(req.session.passport.user);
+        const newMeeting = new Meeting({
+            user_id: user.username,
+            meeting_code: meeting_code
         })
-        await  newMeeting.save();
-        res.status(httpStatus.CREATED).json({message:'Added code to history'});
-    }catch(e){res.json({message:'Someting went wrong'})}
-
+        await newMeeting.save();
+        res.status(httpStatus.CREATED).json({ message: 'Added code to history' });
+    } catch (e) { res.json({ message: 'Someting went wrong' }) }
 }
 
-export {getUserHistory,addToHistory};
+router.get('/addHistory',(req,res)=>{
+    console.log(req.body);
+})
+
+module.exports= { getUserHistory, addToHistory };

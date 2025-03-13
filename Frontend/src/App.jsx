@@ -9,6 +9,7 @@ import Room from './components/Room';
 import PageNotFound from './components/PageNotFound';
 import Lobby from './components/Lobby';
 import  Features  from './components/Landing_Page/Features.jsx';
+import History from './components/History.jsx';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path='/Room' element={<Room />} />
           <Route path='/Room/:url' element={<Lobby/>}/>
           <Route path='/features' element={<Features/>}/>
+          <Route path='/history' element={<History/>}/>
           <Route path="*" element={<PageNotFound/>}/>
         </Routes>
       </div>

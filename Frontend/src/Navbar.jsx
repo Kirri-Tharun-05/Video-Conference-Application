@@ -6,7 +6,6 @@ import { toast } from 'react-toastify';
 const Navbar = () => {
   const [currUser, setCurrUser] = useState(null);
   const navigate = useNavigate();
-
   const fetchUser = async () => {
     try {
       const res = await axios.get("http://localhost:8080/auth/user", {
@@ -22,15 +21,19 @@ const Navbar = () => {
       }
     }
   };
-  
+
   useEffect(() => {
     fetchUser();
   }, []);
-  
+
   useEffect(() => {
     window.addEventListener("userLoggedIn", fetchUser);
     return () => window.removeEventListener("userLoggedIn", fetchUser);
   }, []);
+
+  const handleHistory = ()=>{
+    navigate('/history');
+  }
 
   const handleLogout = async () => {
     try {
@@ -58,7 +61,11 @@ const Navbar = () => {
                   <Link to={'/login'} className='border-2 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-900 '>Log in</Link>
                 </>
               ) : (
-                < button className='cursor-pointer border-2 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-900 pointer' onClick={handleLogout}>Log Out</button>)
+                <>
+                  <button onClick={handleHistory}> History</button>
+                  < button className='cursor-pointer border-2 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-900 pointer' onClick={handleLogout}>Log Out</button>
+                </>
+              )
               }
             </div>
           </div>

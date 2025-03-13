@@ -9,6 +9,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const authRoute = require("./src/routes/auth")
 const passportSetup = require('./config/passport');
 const httpStatus = require('http-status')
+const historyRoute =require('./src/routes/history');
 const { createServer } = require('http'); // Add this line
 
 const PORT = 8080;
@@ -66,6 +67,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use("/auth", authRoute);
+app.use("/history",historyRoute);
+
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   next();
@@ -136,3 +139,4 @@ app.get("/api/user", async (req, res) => {
 server.listen(PORT, (req, res) => {
   console.log(`Listening to the port ${PORT}`);
 })
+
