@@ -14,7 +14,7 @@ const signin = () => {
     try {
       const result = await axios.post(`${server}/signin`, {
         username, password
-      });
+      },{withCredentials:true});
       console.log('Response :', result.data);
       localStorage.setItem('flashMessage', result.data.message);
       navigate('/home')

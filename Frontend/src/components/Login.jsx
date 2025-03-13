@@ -42,7 +42,6 @@ const Login = () => {
           <div className=''>
             <button type='submit' className='px-3 py-2 rounded-lg bg-gradient-to-r from-orange-400 to-orange-800  tracking-wide text-2xl border-white fon border-2 mt-5' >Login</button>
           </div>
-            <p>or</p>
         </form>
       </div>
     </div>
