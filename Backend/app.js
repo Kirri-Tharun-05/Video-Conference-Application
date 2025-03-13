@@ -56,7 +56,7 @@ app.use(session(sessionOptions));
 app.use(flash());
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow only your frontend origin
+    origin: ["http://localhost:5173","https://video-conference-application-frontend.onrender.com"], // Allow only your frontend origin
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"]
   }
