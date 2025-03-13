@@ -8,7 +8,7 @@ export const Hero = () => {
         navigate('/Room');
     }
     return (
-        <div className='flex justify-between py-15'>
+        <div className='flex justify-between'>
             <div className='flex flex-col justify-center items-center'>
                 <div className='flex flex-col justify-center text-center'>
                     <h1 className='text-5xl mb-2'>Seamless Video Calls</h1>

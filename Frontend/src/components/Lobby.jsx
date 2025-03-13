@@ -11,6 +11,7 @@ import videoOn from '../logos/video.png'
 import videoOff from '../logos/no-video.png'
 import screenShareStop from '../logos/screen.png'
 import chat from '../logos/chat.png'
+import isAuth from '../utils/isAuth';
 var connections = {};
 const peerConfigConnections = {
     'iceServers': [
@@ -18,7 +19,7 @@ const peerConfigConnections = {
         // STUN server are lightweight servers running on the public internet which eturns the IP address of the requester's device. 
     ]
 }
-export default function Lobby() {
+function Lobby() {
 
     var socketRef = useRef();
     let socketIdRef = useRef(); // Refers to current user socket id
@@ -441,21 +442,32 @@ export default function Lobby() {
     }
     let handleEndCall = () => {
         try {
-            let tracks = localVideoRef.current.srcObject.getTracks();
-            tracks.forEach((track) => { track.stop() })
-            localVideoRef.current.srcObject = null;
+            let tracks = localVideoref.current.srcObject.getTracks()
+            tracks.forEach(track => track.stop())
+        } catch (e) {console.log(e) }
+
+        // Clean up socket connection
+        if (socketRef.current) {
+            socketRef.current.disconnect();
         }
-        catch (e) { console.log(e) }
+
+        // Clean up connections
+        for (let id in connections) {
+            if (connections[id]) {
+                connections[id].close();
+                delete connections[id];
+            }
+        }
         routeTo('/home');
     }
     return (
         <div>
             {askForUsername === true ? <div className='grid grid-cols-1 sm:grid-cols-2 px-10 items-center '>
-                
+
                 <div className="">
                     <label htmlFor="username">Username</label>
                     <input type="text" id='username' style={{ margin: '1rem', backgroundColor: 'white', color: 'black' }} onChange={e => { setUsername(e.target.value) }} />
-                    <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={connect}>
+                    <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90 join' onClick={connect}>
                         Join
                     </button>
                 </div>
@@ -518,3 +530,5 @@ export default function Lobby() {
         </div>
     );
 }
+
+export default isAuth(Lobby);

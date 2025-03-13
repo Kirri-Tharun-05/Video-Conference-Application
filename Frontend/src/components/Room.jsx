@@ -8,15 +8,21 @@ import { toast } from 'react-toastify';
 function Room() {
   const navigate = useNavigate();
   const [roomID, setRoomId] = useState();
+  const [userName, setUserName] = useState("Guest");
+
   const handleClick = () => {
-    if(roomID!=null)
-    {
+    if (roomID != null) {
+      axios.post('http://localhost:8080/history/addUserHistory', { meeting_code: roomID }, { withCredentials: true })
+        .then((res) => {
+          console.log(res);
+          setAddHistory(false);
+        })
+        .catch((e) => { console.log(e) })
       navigate(`/Room/${roomID}`);
-    }else{
+    } else {
       toast.warning('Enter Room Id');
     }
   }
-  const [userName, setUserName] = useState("Guest");
 
   // Fetch user details from session
   useEffect(() => {
@@ -31,8 +37,8 @@ function Room() {
         <div>
           <h1 className='text-3xl'>Hello {userName}!</h1>
           <h1 className='text-2xl'>Type Your Room Id</h1>
-          <input type="text" name="" id="" placeholder='Enter Room Id' onChange={e => setRoomId(e.target.value)} className='roomId' required/>
-          <button  type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
+          <input type="text" name="" id="" placeholder='Enter Room Id' onChange={e => setRoomId(e.target.value)} className='roomId' required />
+          <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
             Join
           </button>
         </div>

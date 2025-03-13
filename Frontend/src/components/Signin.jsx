@@ -24,7 +24,7 @@ const signin = () => {
   };
 
   return (
-    <div className="flex flex-col items-center my-10">
+    <div className="flex flex-col items-center my-10 ">
       <div className='mb-4'>
         <h1 className='text-3xl sm:text-4xl lg:text-5xl'>Sign in</h1>
       </div>

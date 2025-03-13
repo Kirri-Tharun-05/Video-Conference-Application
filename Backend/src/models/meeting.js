@@ -3,8 +3,8 @@ const { Schema } = mongoose;
 
 const meeting = new Schema({
     user_id: { type: String },
-    meetingCode: { type: String },
-    data: {
+    meeting_code: { type: String },
+    date: {
         type: Date,
         default: Date.now(),
         required:true

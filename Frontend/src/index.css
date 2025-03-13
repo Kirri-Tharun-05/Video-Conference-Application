@@ -211,8 +211,63 @@
   opacity: 1;
 }
 
-.animation{
+.animation {
   height: 30rem;
+}
+
+.history {
+  display: flex;
+  height: 85vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.historyList {
+  overflow-y: auto;
+  height: 80%;
+  padding-right: 5px;
+}
+
+.historyList::-webkit-scrollbar {
+  width: 0.8rem;
+}
+
+.historyList::-webkit-scrollbar-track {
+  background-color: black;
+  border-radius: 1rem;
+}
+
+.historyList::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8a2387, #e94057, #f27121);
+  border-radius: 1rem;
+  border: 3.2px solid transparent;
+  background-clip: content-box;
+}
+
+.historyList::-webkit-scrollbar-thumb:active {
+  background-color: yellow;
+}
+
+.join {
+  background: linear-gradient(90deg, #8a2387, #e94057, #f27121);
+  font-weight: 900;
+  color: white;
+  transform: scale(90%);
+}
+
+.join:hover {
+  transform: scale(100%);
+}
+
+.historyBtn {
+  transform: scale(95%);
+  transition: 0.15s transform ease-in-out;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+  font-weight: 900;
+}
+
+.historyBtn:hover {
+  transform: scale(100%);
 }
 
 @media (max-width: 480px) {

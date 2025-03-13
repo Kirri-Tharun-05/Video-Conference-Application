@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const isAuth = (WrapedContent) => {
+const isAuth = (WrappedContent) => {
     const AuthComponent = (props) => {
         const router = useNavigate();
 
@@ -16,7 +16,7 @@ const isAuth = (WrapedContent) => {
                 router('/login')
             }
         },[router]);
-        return isAuthenticated()? <WrapedContent{...props}/> : null;
+        return isAuthenticated()? <WrappedContent{...props}/> : null;
     }
     return AuthComponent;
 };
