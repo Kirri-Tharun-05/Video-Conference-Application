@@ -3,6 +3,7 @@ import gLogo from '../logos/google_logo.png'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import server from '../environment';
 
 const signin = () => {
   const [username, setusername] = useState('');
@@ -11,7 +12,7 @@ const signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await axios.post('http://localhost:8080/signin', {
+      const result = await axios.post(`${server}/signin`, {
         username, password
       });
       console.log('Response :', result.data);
@@ -46,7 +47,7 @@ const signin = () => {
               <p>Or</p>
             </div>
             <div className=''>
-              <button className='px-3 py-3 rounded-lg bg-gradient-to-r  tracking-wide text-1xl border-white fon border-2 ' onClick={() => window.location.href = "http://localhost:8080/auth/google"}><img src={gLogo} alt="" className='w-8 inline mx-2' />Sign in with Google</button>
+              <button className='px-3 py-3 rounded-lg bg-gradient-to-r  tracking-wide text-1xl border-white fon border-2 ' onClick={() => window.location.href = `${server}/auth/google`}><img src={gLogo} alt="" className='w-8 inline mx-2' />Sign in with Google</button>
             </div>
           </div>
         </form>

@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import isAuth from "../utils/isAuth";
+import server from "../environment";
 
 const History = () => {
     const [meetings, setMeetings] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://localhost:8080/history/getUserHistory', { withCredentials: true })
+        axios.get(`${server}/history/getUserHistory`, { withCredentials: true })
             .then((res) => {
                 console.log(res.data);
                 setMeetings(res.data);

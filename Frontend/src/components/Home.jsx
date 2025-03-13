@@ -5,11 +5,12 @@ import { toast } from 'react-toastify';
 // import { motion } from 'framer-motion';
 import { Hero } from './Landing_Page/Hero.jsx';
 import Features from './Landing_Page/Features.jsx';
+import server from '../environment.js';
 const Home = () => {
   useEffect(() => {
     // For google.signin
     if (!localStorage.getItem('googleMessage')) {
-      axios.get("http://localhost:8080/auth/login/success", { withCredentials: true })
+      axios.get(`${server}/auth/login/success`, { withCredentials: true })
         .then((response) => {
           toast.success(response.data.message);
           localStorage.setItem("googleMessage", true);

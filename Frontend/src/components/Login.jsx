@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import server from '../environment';
 const Login = () => {
   const [username,setUsername]=useState('');
   const [password,setPassword]=useState('');
@@ -10,7 +11,7 @@ const Login = () => {
   const handleSubmit= async(e)=>{
     e.preventDefault();
     try{
-      const result= await axios.post('http://localhost:8080/login',{
+      const result= await axios.post(`${server}/login`,{
         username,password },{ withCredentials: true })
       console.log(result);
       localStorage.setItem('flashMessage', result.data.message);

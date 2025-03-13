@@ -5,6 +5,7 @@ import Lottie from 'lottie-react'
 import axios from 'axios';
 import animation2 from '../assets/animation2.json'
 import { toast } from 'react-toastify';
+import server from '../environment';
 function Room() {
   const navigate = useNavigate();
   const [roomID, setRoomId] = useState();
@@ -12,7 +13,7 @@ function Room() {
 
   const handleClick = () => {
     if (roomID != null) {
-      axios.post('http://localhost:8080/history/addUserHistory', { meeting_code: roomID }, { withCredentials: true })
+      axios.post(`${server}/history/addUserHistory`, { meeting_code: roomID }, { withCredentials: true })
         .then((res) => {
           console.log(res);
           setAddHistory(false);
@@ -26,7 +27,7 @@ function Room() {
 
   // Fetch user details from session
   useEffect(() => {
-    axios.get("http://localhost:8080/api/user", { withCredentials: true }) // Send cookies with request
+    axios.get(`${server}/api/user`, { withCredentials: true }) // Send cookies with request
       .then((res) => setUserName(res.data.name))
       .catch(() => setUserName("Guest")); // If unauthorized, set default
   }, []);

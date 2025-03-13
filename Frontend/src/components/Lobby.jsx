@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import io from "socket.io-client";
-const server_URL = 'http://localhost:8080'
 import redCall from '../logos/Call-red.png'
 import greenCall from '../logos/Call-green.png'
 import micOn from '../logos/micOn.png'
@@ -12,6 +11,8 @@ import videoOff from '../logos/no-video.png'
 import screenShareStop from '../logos/screen.png'
 import chat from '../logos/chat.png'
 import isAuth from '../utils/isAuth';
+import server from '../environment';
+const server_URL = server;
 var connections = {};
 const peerConfigConnections = {
     'iceServers': [

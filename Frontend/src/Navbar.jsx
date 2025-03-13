@@ -3,12 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import server from './environment';
 const Navbar = () => {
   const [currUser, setCurrUser] = useState(null);
   const navigate = useNavigate();
   const fetchUser = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/auth/user", {
+      const res = await axios.get(`${server}/auth/user`, {
         withCredentials: true, // ✅ Required for cookies
       });
       setCurrUser(res.data); // ✅ Set user state
@@ -37,7 +38,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      let result = await axios.get("http://localhost:8080/auth/logout", { withCredentials: true }); // Inform backend
+      let result = await axios.get(`${server}/auth/logout`, { withCredentials: true }); // Inform backend
       localStorage.removeItem("googleMessage"); // Remove stored message
       toast.success(result.data.message);
       setCurrUser(null);
