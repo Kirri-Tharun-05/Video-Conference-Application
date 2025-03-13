@@ -48,19 +48,26 @@ const sessionOptions = ({
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none", 
   }
 });
 
 app.use(session(sessionOptions));
 app.use(flash());
+
+
 app.use(
   cors({
     origin: ["http://localhost:5173","https://video-conference-application-frontend.onrender.com"], // Allow only your frontend origin
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"]
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }
   ));
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 // this line is to authenticate the user
