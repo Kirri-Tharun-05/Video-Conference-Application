@@ -90,6 +90,8 @@ const connectionToSocket = (server) => {
                     if(connections[room].length===0)
                     {
                         delete connections[room];
+                        delete messages[room];
+                        console.log(`Room ${room} is now empty. Deleted the room and its messages.`);
                     }
                     break; // Exit once the room is found
                 }
@@ -97,7 +99,6 @@ const connectionToSocket = (server) => {
 
         })
     })
-
     return io;
 }
 

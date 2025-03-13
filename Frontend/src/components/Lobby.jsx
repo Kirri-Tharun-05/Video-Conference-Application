@@ -20,6 +20,9 @@ const peerConfigConnections = {
     ]
 }
 function Lobby() {
+    console.log('connections : ', connections);
+    console.log('connections : ', Object.keys(connections).length);
+
 
     var socketRef = useRef();
     let socketIdRef = useRef(); // Refers to current user socket id
@@ -58,7 +61,7 @@ function Lobby() {
     const videoRef = useRef([]) //A React ref (useRef) that stores the same list of video streams but does NOT trigger re-renders.
     //Manually updated whenever videos is updated.
 
-
+    console.log(messages);
     const getPermissions = async () => {  // This function is to get the permissions for the video and audio
         try {
             const videoPermission = await navigator.mediaDevices.getUserMedia({ video: true }); // getting user permission for video
@@ -444,13 +447,12 @@ function Lobby() {
         try {
             let tracks = localVideoref.current.srcObject.getTracks()
             tracks.forEach(track => track.stop())
-        } catch (e) {console.log(e) }
+        } catch (e) { console.log(e) }
 
         // Clean up socket connection
         if (socketRef.current) {
             socketRef.current.disconnect();
         }
-
         // Clean up connections
         for (let id in connections) {
             if (connections[id]) {
@@ -458,6 +460,10 @@ function Lobby() {
                 delete connections[id];
             }
         }
+        if ((Object.keys(connections).length) === 0) {
+            setMessages([]);
+        }
+
         routeTo('/home');
     }
     return (
@@ -479,25 +485,32 @@ function Lobby() {
                     <div className={`Chat-Bar w-2xs ${chatBar ? 'show' : 'hide'}`}>
                         <p className='text-3xl text-black underline'>Chat-Box</p>
                         <div>
-                            <p style={{ color: 'black' }}>{message}</p>
+                            <p style={{ color: 'black' }}>{ }</p>
                             {messages.map((item, index) => {
-                                return (
-                                    <div key={index} className='overflow-x-auto'>
-                                        <p className='font-bold bg-amber-600 '>{item.sender}</p>
-                                        <p className='font-bold bg-amber-600 '>{item.data}</p>
+                                console.log("inside the messages.map : ", item)
+                                console.log("inside the messages.map : ", username)
+                                const isCurrentUser = item.sender === username; // Compare sender with the current user
 
-                                        {console.log(item.sender)}
-                                    </div>
+                                return (
+                                    <div key={index} className='border-black border-3 rounded-2xl overflow-hidden text-start flex mb-1'>
+                                    <p className={`font-bold ${isCurrentUser ? 'bg-blue-500' : 'bg-amber-600'} text-white px-5 py-1`}>
+                                        {item.sender}
+                                    </p>
+                                    <p className={`font-bold ${isCurrentUser ? 'bg-blue-300' : 'bg-amber-300'} text-black px-5 py-1 w-full`}>
+                                        {item.data}
+                                    </p>
+                                </div>
                                 );
                             })}
                         </div>
 
                         <div className='messageBox'>
-                            <input type="text" placeholder='Type your message' onChange={e => setMessage(e.target.value)} />
+                            <input type="text" placeholder='Type your message' value={message} onChange={e => setMessage(e.target.value)} />
                             <button type='submit' onClick={sendMessage} >Send</button>
                         </div>
                     </div>
 
+                    {/* <p className='text-white text-4xl'>{socketIdRef.current}</p> */}
                     <video ref={localVideoRef} autoPlay muted className={`meetUserContainer ${chatBar ? 'shift-left' : ''} ${videos.length >= 2 ? 'min-video' : 'max-video'}`}></video>
                     <div className='conference pb-15 flex flex-wrap justify-center '>
                         {videos.map((video) => (
