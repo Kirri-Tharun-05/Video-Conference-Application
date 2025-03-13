@@ -142,4 +142,3 @@ app.get("/api/user", async (req, res) => {
 server.listen(PORT, () => {
   console.log(`Listening to the port ${PORT}`);
 })
-
