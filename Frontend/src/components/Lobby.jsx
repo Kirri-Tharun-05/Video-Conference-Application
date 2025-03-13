@@ -482,9 +482,11 @@ function Lobby() {
                 </div>
             </div> :
                 <div className='meetVideoContainer flex justify-center overflow-hidden'>
-                    <div className={`Chat-Bar w-2xs ${chatBar ? 'show' : 'hide'}`}>
-                        <p className='text-3xl text-black underline'>Chat-Box</p>
-                        <div>
+                    <div className={`Chat-Bar w-2xs ${chatBar ? 'show' : 'hide'} flex flex-col`}>
+                        <div className='chatTitle'>
+                            <p className='text-3xl text-black underline'>Chat-Box</p>
+                        </div>
+                        <div className='chatMessages'>
                             <p style={{ color: 'black' }}>{ }</p>
                             {messages.map((item, index) => {
                                 console.log("inside the messages.map : ", item)
@@ -493,18 +495,17 @@ function Lobby() {
 
                                 return (
                                     <div key={index} className='border-black border-3 rounded-2xl overflow-hidden text-start flex mb-1'>
-                                    <p className={`font-bold ${isCurrentUser ? 'bg-blue-500' : 'bg-amber-600'} text-white px-5 py-1`}>
-                                        {item.sender}
-                                    </p>
-                                    <p className={`font-bold ${isCurrentUser ? 'bg-blue-300' : 'bg-amber-300'} text-black px-5 py-1 w-full`}>
-                                        {item.data}
-                                    </p>
-                                </div>
+                                        <p className={`font-bold ${isCurrentUser ? 'bg-blue-500' : 'bg-amber-600'} text-white px-5 py-1`}>
+                                            {item.sender}
+                                        </p>
+                                        <p className={`font-bold ${isCurrentUser ? 'bg-blue-300' : 'bg-amber-300'} text-black px-5 py-1 w-full`}>
+                                            {item.data}
+                                        </p>
+                                    </div>
                                 );
                             })}
                         </div>
-
-                        <div className='messageBox'>
+                        <div className='messageBox chatInputBox'>
                             <input type="text" placeholder='Type your message' value={message} onChange={e => setMessage(e.target.value)} />
                             <button type='submit' onClick={sendMessage} >Send</button>
                         </div>
