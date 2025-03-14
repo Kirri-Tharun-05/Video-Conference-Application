@@ -54,8 +54,6 @@ const sessionOptions = ({
   }
 });
 
-app.use(session(sessionOptions));
-app.use(flash());
 
 
 app.use(
@@ -66,11 +64,14 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
     // allowedHeaders: ["Content-Type", "Authorization"],
   }
-  ));
+));
 
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(session(sessionOptions));
+app.use(flash());
+
 // this line is to authenticate the user
 passport.use(new LocalStrategy(User.authenticate()))
 
