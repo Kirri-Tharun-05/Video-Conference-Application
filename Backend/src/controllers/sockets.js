@@ -9,7 +9,7 @@ const connectionToSocket = (server) => {
         cors:{
             origin:'*',
             methods:['GET','POST'],
-            allowedHeaders:['*'], // change during production level
+            // allowedHeaders:['*'], // change during production level
             credentials:true
         }
     });

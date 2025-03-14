@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV != "production"){
+if (process.env.NODE_ENV != "production") {
   require('dotenv').config();
 }
 const express = require('express');
@@ -11,7 +11,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const authRoute = require("./src/routes/auth")
 const passportSetup = require('./config/passport');
 const httpStatus = require('http-status')
-const historyRoute =require('./src/routes/history');
+const historyRoute = require('./src/routes/history');
 const { createServer } = require('http'); // Add this line
 
 const PORT = 8080;
@@ -50,7 +50,7 @@ const sessionOptions = ({
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none", 
+    sameSite: "none",
   }
 });
 
@@ -60,10 +60,11 @@ app.use(flash());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173","https://video-conference-application-frontend.onrender.com"], // Allow only your frontend origin
+    // origin: ["http://localhost:5173","https://video-conference-application-frontend.onrender.com"], // Allow only your frontend origin
+    origin: "https://video-conference-application-frontend.onrender.com", // Allow only your frontend origin
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
   }
   ));
 
@@ -77,7 +78,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use("/auth", authRoute);
-app.use("/history",historyRoute);
+app.use("/history", historyRoute);
 
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
@@ -132,14 +133,14 @@ app.get("/api/user", async (req, res) => {
   try {
     // Fetch user from database using stored user ID
     const user = await User.findById(req.session.passport.user);
-    
+
     if (!user) {
       console.log("❌ User not found in database!");
       return res.status(404).json({ message: "User not found" });
     }
 
     console.log("✅ User found:", user);
-    res.json({ name: user.username}); // Adjust according to your schema
+    res.json({ name: user.username }); // Adjust according to your schema
   } catch (error) {
     console.error("❌ Error fetching user:", error);
     res.status(500).json({ message: "Internal server error" });
