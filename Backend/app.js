@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV != "production") {
+if(process.env.NODE_ENV != "production"){
   require('dotenv').config();
 }
 const express = require('express');
@@ -49,12 +49,13 @@ const sessionOptions = ({
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
-    secure: true,
-    sameSite: "none"
   }
 });
 
 
+
+app.use(session(sessionOptions));
+app.use(flash());
 
 app.use(
   cors({
@@ -66,8 +67,6 @@ app.use(
   }
 ));
 
-app.use(session(sessionOptions));
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 // this line is to authenticate the user
@@ -83,10 +82,10 @@ app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   next();
 })
-app.use((req, res, next) => {
-  console.log("Session Data:", req.session);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("Session Data:", req.session);
+//   next();
+// });
 
 
 app.get('/home', (req, res) => {
