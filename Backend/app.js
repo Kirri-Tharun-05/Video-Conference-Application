@@ -66,17 +66,15 @@ app.use(
   }
 ));
 
-
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(session(sessionOptions));
 app.use(flash());
-
+app.use(passport.initialize());
+app.use(passport.session());
 // this line is to authenticate the user
 passport.use(new LocalStrategy(User.authenticate()))
-
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 app.use("/auth", authRoute);
 app.use("/history", historyRoute);
