@@ -50,7 +50,7 @@ const sessionOptions = ({
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   }
 });
 
@@ -84,6 +84,10 @@ app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   next();
 })
+app.use((req, res, next) => {
+  console.log("Session Data:", req.session);
+  next();
+});
 
 
 app.get('/home', (req, res) => {
