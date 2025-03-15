@@ -444,30 +444,85 @@ function Lobby() {
         socketRef.current.emit('chat-message', message, username);
         setMessage('');
     }
-    let handleEndCall = () => {
+    // let handleEndCall = () => {
+    //     try {
+    //         let tracks = localVideoref.current.srcObject.getTracks()
+    //         tracks.forEach(track => track.stop())
+    //     } catch (e) { console.log(e) }
+
+    //     // Clean up socket connection
+    //     if (socketRef.current) {
+    //         socketRef.current.disconnect();
+    //     }
+    //     // Clean up connections
+    //     for (let id in connections) {
+    //         if (connections[id]) {
+    //             connections[id].close();
+    //             delete connections[id];
+    //         }
+    //     }
+    //     if ((Object.keys(connections).length) === 0) {
+    //         setMessages([]);
+    //     }
+
+    //     // routeTo('/home');
+    //     window.location.href = "/home"; 
+    // }
+    let handleEndCall = async () => {
         try {
-            let tracks = localVideoref.current.srcObject.getTracks()
-            tracks.forEach(track => track.stop())
-        } catch (e) { console.log(e) }
-
-        // Clean up socket connection
-        if (socketRef.current) {
-            socketRef.current.disconnect();
-        }
-        // Clean up connections
-        for (let id in connections) {
-            if (connections[id]) {
-                connections[id].close();
-                delete connections[id];
+            if (localVideoref.current && localVideoref.current.srcObject) {
+                let stream = localVideoref.current.srcObject;
+                let tracks = stream.getTracks();
+    
+                tracks.forEach(track => {
+                    track.stop(); // Stop each media track
+                });
+    
+                localVideoref.current.srcObject = null; // Remove stream reference
             }
+    
+            // ✅ Forcefully revoke camera & mic permissions (if supported)
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                try {
+                    const devices = await navigator.mediaDevices.enumerateDevices();
+                    const videoInput = devices.find(device => device.kind === "videoinput");
+                    const audioInput = devices.find(device => device.kind === "audioinput");
+    
+                    if (videoInput || audioInput) {
+                        const emptyStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: false });
+                        emptyStream.getTracks().forEach(track => track.stop());
+                    }
+                } catch (err) {
+                    console.warn("Error revoking media devices:", err);
+                }
+            }
+    
+            // 🔌 Clean up socket connection
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+            }
+    
+            // 🔌 Clean up WebRTC peer connections
+            Object.keys(connections).forEach(id => {
+                if (connections[id]) {
+                    connections[id].close();
+                    delete connections[id];
+                }
+            });
+    
+            // 📝 Clear messages if all connections are closed
+            if (Object.keys(connections).length === 0) {
+                setMessages([]);
+            }
+    
+            // 🔄 Navigate to home route
+            routeTo('/home');
+    
+        } catch (e) {
+            console.error("Error in handleEndCall:", e);
         }
-        if ((Object.keys(connections).length) === 0) {
-            setMessages([]);
-        }
-
-        // routeTo('/home');
-        window.location.href = "/home"; 
-    }
+    };
+    
     return (
         <div>
             {askForUsername === true ? <div className='grid grid-cols-1 sm:grid-cols-2 px-10 items-center '>
