@@ -446,7 +446,7 @@ function Lobby() {
     }
     // let handleEndCall = () => {
     //     try {
-    //         let tracks = localVideoref.current.srcObject.getTracks()
+    //         let tracks = localVideoRef.current.srcObject.getTracks()
     //         tracks.forEach(track => track.stop())
     //     } catch (e) { console.log(e) }
 
@@ -472,15 +472,15 @@ function Lobby() {
 
     // let handleEndCall = async () => {
     //     try {
-    //         if (localVideoref.current && localVideoref.current.srcObject) {
-    //             let stream = localVideoref.current.srcObject;
+    //         if (localVideoRef.current && localVideoRef.current.srcObject) {
+    //             let stream = localVideoRef.current.srcObject;
     //             let tracks = stream.getTracks();
     
     //             tracks.forEach(track => {
     //                 track.stop(); // Stop each media track
     //             });
     
-    //             localVideoref.current.srcObject = null; // Remove stream reference
+    //             localVideoRef.current.srcObject = null; // Remove stream reference
     //         }
     
     //         // ✅ Forcefully revoke camera & mic permissions (if supported)
@@ -528,12 +528,12 @@ function Lobby() {
     let handleEndCall = async () => {
         try {
             // Stop the media tracks
-            if (localVideoref.current && localVideoref.current.srcObject) {
-                let tracks = localVideoref.current.srcObject.getTracks();
+            if (localVideoRef.current && localVideoRef.current.srcObject) {
+                let tracks = localVideoRef.current.srcObject.getTracks();
                 tracks.forEach(track => {
                     track.stop(); // Stop each media track
                 });
-                localVideoref.current.srcObject = null; // Remove the stream reference
+                localVideoRef.current.srcObject = null; // Remove the stream reference
             }
     
             // Forcefully revoke camera & mic permissions (if supported)
