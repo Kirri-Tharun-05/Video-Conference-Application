@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV != "production"){
+if (process.env.NODE_ENV != "production") {
   require('dotenv').config();
 }
 const express = require('express');
@@ -34,8 +34,6 @@ async function main() {
   await mongoose.connect(process.env.MONGO_URL);
 }
 
-app.use(express.json()); // ✅ Parses JSON data
-app.use(express.urlencoded({ extended: true })); // ✅ Parses form data
 
 const sessionOptions = ({
   secret: process.env.SECRET,
@@ -52,11 +50,7 @@ const sessionOptions = ({
   }
 });
 
-
-
-app.use(session(sessionOptions));
-app.use(flash());
-
+app.set("trust proxy", 1);
 app.use(
   cors({
     // origin: ["http://localhost:5173","https://video-conference-application-frontend.onrender.com"], // Allow only your frontend origin
@@ -65,7 +59,13 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
     // allowedHeaders: ["Content-Type", "Authorization"],
   }
-));
+  ));
+
+app.use(express.json()); // ✅ Parses JSON data
+app.use(express.urlencoded({ extended: true })); // ✅ Parses form data
+app.use(session(sessionOptions));
+app.use(flash());
+
 
 app.use(passport.initialize());
 app.use(passport.session());
