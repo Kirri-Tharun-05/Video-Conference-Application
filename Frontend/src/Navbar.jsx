@@ -10,7 +10,7 @@ const Navbar = () => {
   const fetchUser = async () => {
     try {
       const res = await axios.get(`${server}/auth/user`, {
-        withCredentials: true, // ✅ Required for cookies
+        withCredentials: true // ✅ Required for cookies
       });
       setCurrUser(res.data); // ✅ Set user state
     } catch (error) {

@@ -1,6 +1,4 @@
-if (process.env.NODE_ENV != "production") {
-  require('dotenv').config();
-}
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const session = require('express-session');
@@ -38,7 +36,7 @@ async function main() {
 const sessionOptions = ({
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   store: MongoStore.create({
     mongoUrl: process.env.MONGO_URL,
     collectionName: 'sessions'
@@ -47,16 +45,17 @@ const sessionOptions = ({
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
+    secure: true, // Use secure cookies for HTTPS
+    sameSite: 'None',
   }
 });
 
 app.set("trust proxy", 1);
 app.use(
   cors({
-    // origin: ["http://localhost:5173","https://video-conference-application-frontend.onrender.com"], // Allow only your frontend origin
     origin: "https://video-conference-application-frontend.onrender.com", // Allow only your frontend origin
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    // methods: ["GET", "POST", "PUT", "DELETE"],
     // allowedHeaders: ["Content-Type", "Authorization"],
   }
   ));
@@ -86,7 +85,12 @@ app.use((req, res, next) => {
 //   console.log("Session Data:", req.session);
 //   next();
 // });
-
+app.use((req, res, next) => {
+  res.on('finish', () => { // Logs response headers after request is completed
+    console.log("Response Headers:", res.getHeaders());
+  });
+  next();
+});
 
 app.get('/home', (req, res) => {
   console.log(status.NOT_FOUND);
