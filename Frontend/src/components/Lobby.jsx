@@ -465,7 +465,8 @@ function Lobby() {
             setMessages([]);
         }
 
-        routeTo('/home');
+        // routeTo('/home');
+        window.location.href = "/home"; 
     }
     return (
         <div>
