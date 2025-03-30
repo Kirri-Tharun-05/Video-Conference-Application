@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Button = (title) => {
+export const Button = ({title}) => {
 
     const onHover = (e) => {
         let button = e.target;

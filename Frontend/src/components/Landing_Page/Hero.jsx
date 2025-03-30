@@ -2,23 +2,21 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import videoCall from '../../logos/videoCall.jpg'
-import {Button} from '../Button.jsx'
+import { Button } from '../Button.jsx'
 export const Hero = () => {
-    const navigate=useNavigate();
-    const handleClick=()=>{
+    const navigate = useNavigate();
+    const handleClick = () => {
+        console.log("clicked");
         navigate('/Room');
     }
     return (
         <div className='flex justify-between'>
             <div className='flex flex-col justify-center items-center'>
-                <div className='flex flex-col justify-center text-center'>
-                    <h1 className='text-5xl mb-2'>Seamless Video Calls</h1>
+                <div className='flex flex-col justify-center text-center mb-3 hero-title'>
+                    <h1 className='text-5xl mb-2'>Seamless <span style={{color:'#386fe7'}}>Video Calls</span></h1>
                     <h1 className='text-4xl mb-2'>Anytime, Anywhere</h1>
                 </div>
-                {/* <button className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
-                    Get Started
-                </button> */}
-                <Button title={"Join Meeting"}/>
+                <Button title={"Get Started!"} onClick={handleClick}/>
             </div>
             <div>
                 <motion.img
