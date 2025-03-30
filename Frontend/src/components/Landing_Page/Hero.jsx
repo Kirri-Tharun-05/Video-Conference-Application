@@ -2,6 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import videoCall from '../../logos/videoCall.jpg'
+import {Button} from '../Button.jsx'
 export const Hero = () => {
     const navigate=useNavigate();
     const handleClick=()=>{
@@ -14,9 +15,10 @@ export const Hero = () => {
                     <h1 className='text-5xl mb-2'>Seamless Video Calls</h1>
                     <h1 className='text-4xl mb-2'>Anytime, Anywhere</h1>
                 </div>
-                <button className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
+                {/* <button className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
                     Get Started
-                </button>
+                </button> */}
+                <Button title={"Join Meeting"}/>
             </div>
             <div>
                 <motion.img

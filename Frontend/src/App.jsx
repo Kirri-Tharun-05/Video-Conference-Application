@@ -10,12 +10,13 @@ import PageNotFound from './components/PageNotFound';
 import Lobby from './components/Lobby';
 import Features from './components/Landing_Page/Features.jsx';
 import History from './components/History.jsx';
+import { Button } from './components/Button.jsx';
 function Layout() {
   const location = useLocation();
   const isHistoryRoute = location.pathname === "/history"; // Check if the current route is /history
-
+  const isRoom = location.pathname==="/room";
   return (
-    <div className={`max-w-7xl mx-auto px-6 ${isHistoryRoute ? "" : "py-20"}`}>
+    <div className={`max-w-7xl mx-auto px-6 ${isHistoryRoute | isRoom ? "" : "py-20"}`}>
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
@@ -25,7 +26,7 @@ function Layout() {
         <Route path="/Room" element={<Room />} />
         <Route path="/Room/:url" element={<Lobby />} />
         <Route path="/history" element={<History />} />
-
+        <Route path="/button" element={<Button/>} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>

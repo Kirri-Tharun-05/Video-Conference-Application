@@ -9,7 +9,7 @@ import server from '../environment';
 function Room() {
   const navigate = useNavigate();
   const [roomID, setRoomId] = useState();
-  const [userName, setUserName] = useState("Guest");
+  const [userName, setUserName] = useState(null);
 
   const handleClick = () => {
     if (roomID != null) {
@@ -36,12 +36,14 @@ function Room() {
     <div>
       <div className="roomContent">
         <div>
-          <h1 className='text-3xl'>Hello {userName}!</h1>
-          <h1 className='text-2xl'>Type Your Room Id</h1>
-          <input type="text" name="" id="" placeholder='Enter Room Id' onChange={e => setRoomId(e.target.value)} className='roomId' required />
-          <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
-            Join
-          </button>
+          {userName !== null && <div className="opacity-0 fade-in"><h1 className='text-3xl'>Hello {userName}!</h1>
+            <h1 className='text-2xl'>Type Your Room Id</h1>
+            <input type="text" name="" id="" placeholder='Enter Room Id' onChange={e => setRoomId(e.target.value)} className='roomId' required />
+            <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
+              Join
+            </button>
+            </div>
+          }
         </div>
         <div>
           <Lottie animationData={animation2} className='animation' />
