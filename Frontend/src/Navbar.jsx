@@ -91,8 +91,8 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <button onClick={handleHistory} className="text-gray-700 hover:text-orange-500 transition">History</button>
-              <button onClick={handleLogout} className='border-2 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-900 text-white'>Log Out</button>
+            <button onClick={handleHistory} className='border-2 py-2 rounded-lg text-white text-2xl px-3 menu menu-signin'>History</button>
+            <button onClick={handleLogout} className='border-2 py-2 rounded-lg  text-white text-2xl px-3 menu menu-login'>Log Out</button>
             </>
           )}
         </div>
