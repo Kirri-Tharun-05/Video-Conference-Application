@@ -18,8 +18,8 @@ function Works() {
     ];
 
     return (
-        <div className='my-80 flex flex-col items-center'>
-            <motion.h1 
+        <div className='mt-70 flex flex-col items-center'>
+            <motion.h1
                 className='text-5xl text-center mb-10 work'
                 initial={{ opacity: 0, y: -50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -28,11 +28,10 @@ function Works() {
             >
                 How It <span className='text-blue-500'>Works?</span>
             </motion.h1>
-
             <div className="flex flex-col items-center space-y-6">
                 {steps.map((step, index) => (
-                    <motion.div 
-                        key={index} 
+                    <motion.div
+                        key={index}
                         className="steps border p-6 rounded-lg shadow-md w-full max-w-lg text-center"
                         initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}

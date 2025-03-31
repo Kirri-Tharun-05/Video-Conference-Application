@@ -360,7 +360,6 @@ button {
 .hero-title {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
-
 .steps{
   border: 1px solid white;
   padding: 1em;
@@ -445,9 +444,20 @@ button {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 539px) {
+  .feature{
+    font-size: 2rem;
+  }
   .min-video {
     height: 10vh;
+  }
+  
+  .hero-img{
+    margin-top: 3rem;
+  }
+
+  .hero{
+    margin-top:2rem;
   }
 
   .meetVideoContainer {
@@ -467,8 +477,17 @@ button {
   }
 }
 
-@media(min-width:600px) {
+@media (min-width:540px){
+  .hero-img{
+    margin-top: 3rem;
+  } 
+}
+
+@media (min-width:600px) {
   .meetUserContainer {
     height: 16vh;
   }
+  /* .hero-img{
+    margin-top: 4rem;
+  } */
 }

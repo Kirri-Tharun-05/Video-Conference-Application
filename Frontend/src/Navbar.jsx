@@ -67,7 +67,7 @@ const Navbar = () => {
     navigate('/login');
   }
   return (
-    <nav className='sticky top-0 py-4 border-b border-neutral-700/80 z-10 ' style={{ background: 'linear-gradient(to right, #111827, #1f2937, #374151)' }}>
+    <nav className='sticky top-0 py-4 border-b border-neutral-700/80 z-10 lg:px-6' style={{ background: 'linear-gradient(to right, #111827, #1f2937, #374151)' }}>
       <div className="container mx-auto px-4 flex justify-between items-center">
 
         {/* Logo */}

@@ -8,7 +8,7 @@ const Features = () => {
 
   return (
     <div className="my-50 flex flex-col items-center" ref={ref}>
-      <h1 className="text-5xl text-center mb-20 work">
+      <h1 className="text-5xl text-center mb-20 work feature">
         Powerful Features for Seamless <br /> <span className="text-blue-500">Communication</span>
       </h1>
       <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-6">

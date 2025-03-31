@@ -10,15 +10,17 @@ export const Hero = () => {
         navigate('/Room');
     }
     return (
-        <div className='flex justify-between'>
+        <div className='flex justify-between flex-col lg:flex-row hero work items-center'>
             <div className='flex flex-col justify-center items-center'>
-                <div className='flex flex-col justify-center text-center mb-3 hero-title'>
-                    <h1 className='text-5xl mb-2'>Seamless <span style={{color:'#386fe7'}}>Video Calls</span></h1>
+                <div className='flex flex-col justify-center text-center mb-3'>
+                    <h1 className='text-2xl mb-2 sm:text-4xl lg:text-5xl'>Seamless <span style={{ color: '#386fe7' }}>Video Calls</span></h1>
                     <h1 className='text-4xl mb-2'>Anytime, Anywhere</h1>
                 </div>
-                <Button title={"Get Started!"} onClick={handleClick}/>
+                <a onClick={handleClick}>
+                    <Button title={"Get Started!"} />
+                </a>
             </div>
-            <div>
+            <div className='hero-img'>
                 <motion.img
                     src={videoCall}
                     alt="Floating Image"
