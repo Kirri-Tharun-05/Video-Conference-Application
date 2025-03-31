@@ -1,11 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
 
-
 :root {
   background: linear-gradient(to right, #111827, #1f2937, #374151);
   /* background: linear-gradient(135deg, #15002b, #500080, #b000b5, #ff00ff); */
-
   color: white;
 }
 
@@ -53,7 +51,6 @@
   color: white;
 }
 
-
 .chat {
   position: relative;
   display: inline-block;
@@ -78,14 +75,6 @@
   z-index: 10;
   /* Ensures it stays above the icon */
 }
-
-/* .conferenceContainer{
-  min-width:5rem ;
-  padding: 1rem;
-}
-.conferenceContainer video{
-  border-radius:1rem ;
-} */
 
 .chatTitle {
   height: 10%;
@@ -144,7 +133,6 @@
 .Chat-Bar {
   z-index: 1;
   position: absolute;
-  /* width: 17vw; */
   border-radius: 0.5rem;
   margin: 0.5rem;
   background-color: white;
@@ -157,13 +145,10 @@
   transition: transform 0.3s ease-in-out;
 }
 
-
-
 .hide {
   transform: translateX(20rem);
 }
 
-/* Visible State (Slide In) */
 .show {
   transform: translateX(0);
 }
@@ -198,7 +183,6 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-
 .getStarted {
   font-size: larger;
   font-weight: 500;
@@ -220,15 +204,37 @@
   height: auto;
   /* transition:0.5s background-color ease-in-out ; */
 }
-/* .card:hover{
+
+.animate-card {
+  transition: 0.5s background-color ease-in-out, 2s color ease-in-out;
+}
+
+.animate-card:hover {
   background-color: #386fe7 !important;
-} */
+}
+
+.animate-card:hover p {
+  color: white;
+  transition: color 0.5s ease-in-out;
+}
+
+.animate-card:hover .icons {
+  color: white;
+  transition: color 0.5s ease-in-out;
+}
+
+.animate-card:hover h3 {
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+  transition: text-shadow 0.5s ease-in-out;
+}
+
+.work{
+  text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.8);
+}
 
 .expand {
   width: 100%;
-  /* Ensures it takes the full width of the parent */
   max-width: 30rem;
-  /* Prevents it from getting too wide */
   overflow-wrap: break-word;
 }
 
@@ -330,11 +336,23 @@ button {
   animation: fadeIn 0.5s ease-in-out forwards;
 }
 
-
-
-.hero-title{
+.hero-title {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+.steps{
+  border: 1px solid white;
+  padding: 1em;
+  margin: 1rem;
+  border-radius: 1rem;
+  background-color: transparent;
+  transition: 0.5s background-color ease-in-out,0.5s color ease-in-out;
+}
+.steps:hover{
+  background-color: white;
+  color: black;
+}
+
 /* button .animation */
 
 .button {
@@ -362,7 +380,7 @@ button {
   /* box-shadow: 0 0 25px orange,0 0 100px orange,0 0 150px orange; */
 }
 
-.button span{
+.button span {
   display: inline-block;
   transition: transform 0.5s;
   text-shadow: 0 35px #fff;
@@ -370,11 +388,11 @@ button {
   transform: translateY(0px);
 }
 
-.button:hover span.hover{
+.button:hover span.hover {
   transform: translateY(-35px);
 }
 
-.button span.hover{
+.button span.hover {
   transform: translateY(-35px);
 }
 
