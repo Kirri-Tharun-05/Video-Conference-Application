@@ -26,12 +26,12 @@ const History = () => {
     return (
         <div className="">
             <div className="history">
-                <div className="bg-white p-6 rounded-2xl shadow-xl w-96  flex flex-col border-4 border-orange-600" style={{ maxHeight: '80%' }}>
+                <div className="bg-white p-6 rounded-2xl shadow-xl w-96  flex flex-col border-4 border-blue-500" style={{ maxHeight: '80%' }}>
                     <h2 className="text-xl font-semibold mb-4 text-black text-center">Meeting History</h2>
                     <div className="historyList">
                         <ul className="space-y-2">
                             {meetings.map((meeting, index) => (
-                                <li key={index} className="p-2 bg-gray-100 rounded-md border-2 border-orange-600 historyListItem">
+                                <li key={index} className="p-2 bg-gray-100 rounded-md border-2 border-blue-500 historyListItem">
                                     <p className="text-black font-medium">Room Id : {meeting.meeting_code}</p>
                                     <p className="text-black font-medium">Date : {formatDate(meeting.date)}</p>
                                 </li>
@@ -39,7 +39,7 @@ const History = () => {
                         </ul>
                     </div>
                     <div>
-                        <button className="mt-4 px-4 py-2 text-white rounded-md w-full historyBtn text-2xl" style={{ background: 'linear-gradient(90deg, #8a2387, #e94057, #f27121)' }} onClick={() => navigate(-1)}>
+                        <button className="mt-4 px-4 py-2 text-white rounded-md w-full historyBtn text-2xl" style={{ background: '#386fe7' }} onClick={() => navigate(-1)}>
                             Close
                         </button>
                     </div>
