@@ -321,7 +321,7 @@
 }
 
 .historyList::-webkit-scrollbar-thumb {
-  background:linear-gradient(to bottom, #007bff, #0056b3);
+  background:linear-gradient(to bottom, #4997e9, #024996);;
   border-radius: 1rem;
   border: 3.2px solid transparent;
   background-clip: content-box;
