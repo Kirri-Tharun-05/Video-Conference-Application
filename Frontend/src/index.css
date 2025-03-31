@@ -353,6 +353,22 @@ button {
   color: black;
 }
 
+.steps h2{
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+.steps:hover h2{
+  transition: 0.5s color ease-in-out;
+  color: black;
+}
+.steps:hover span{
+  color: #386fe7;
+}
+.steps:hover p{
+  color: #374151;
+  transition: 0.5s color ease-in-out;
+}
+
 /* button .animation */
 
 .button {

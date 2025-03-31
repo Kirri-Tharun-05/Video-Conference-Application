@@ -4,6 +4,12 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import server from './environment';
+import logo1 from './logos/logo1.png'
+import logo2 from './logos/logo2.png'
+import logo3 from './logos/logo3.png'
+import logo4 from './logos/logo4.png'
+import logo5 from './logos/logo5.png'
+import logo6 from './logos/logo6.png'
 const Navbar = () => {
   const [currUser, setCurrUser] = useState(null);
   const navigate = useNavigate();
@@ -53,7 +59,8 @@ const Navbar = () => {
         <div className="container px-4 mx-auto">
           <div className="flex justify-between">
             <div className='flex items-center'>
-              <a className='text-2xl' href='/home'>😉 Let's Talk</a>
+              {/* <a className='text-2xl' href='/home'><img src={logo5} alt="" style={{height:'3rem'}}/></a> */}
+              <a className='text-2xl' href='/home'><img src={logo6} alt="" style={{height:'3rem'}} /></a>
             </div>
             <div className="lg:flex justify-center space-x-10 items-center">
               {!currUser ? (
