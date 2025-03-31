@@ -5,7 +5,14 @@ import { toast } from 'react-toastify';
 import { Flashlight, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import server from './environment';
-import logo8 from './logos/logo6.png';
+// import logo8 from './logos/logo1.png';
+// import logo8 from './logos/logo2.png';
+// import logo8 from './logos/logo3.png';
+// import logo8 from './logos/logo4.png';
+// import logo8 from './logos/logo8.png';
+// import logo8 from './logos/logo8.png';
+import logo7 from './logos/logo6.png';
+// import logo7 from './logos/logo7.png';
 const Navbar = () => {
   const [currUser, setCurrUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -72,15 +79,15 @@ const Navbar = () => {
 
         {/* Logo */}
         <a href='/home' className='text-2xl'>
-          <img src={logo8} alt="Logo" className="h-12" />
+          <img src={logo7} alt="Logo" className="h-12" />
         </a>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex space-x-8 items-center">
           {!currUser ? (
             <>
-              <Link to='/signin' className='border-2 px-3 py-2 rounded-lg'>Sign in</Link>
-              <Link to='/login' className='border-2 px-4 py-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-900 text-white'>Log in</Link>
+              <button onClick={handleSignIn} className='border-2 py-2 rounded-lg text-white text-2xl px-3 menu menu-signin'>Sign in</button>
+              <button onClick={handleLogIn} className='border-2 py-2 rounded-lg  text-white text-2xl px-3 menu menu-login'>Log in</button>
             </>
           ) : (
             <>

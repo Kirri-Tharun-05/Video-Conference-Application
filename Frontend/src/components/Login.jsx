@@ -25,22 +25,22 @@ const Login = () => {
   }
   
   return (
-    <div className="flex flex-col items-center">
-      <div className='mb-20'>
-        <h1 className='text-3xl sm:text-4xl lg:text-5xl'>Log in</h1>
+    <div className="flex flex-col text-center justify-center">
+      <div className='mb-15'>
+        <h1 className='text-5xl work'>Log in</h1>
       </div>
-      <div className='px-2 py-10 border rounded-3xl'>
+      <div className='px-2 rounded-3xl'>
         <form onSubmit={handleSubmit} className='flex flex-col items-center'>
-          <div className='my-10 mx-10'>
-            <label htmlFor="username" className='mr-10 text-2xl tracking-wide'>Username</label>
+          <div className='lg:my-10 mx-10'>
+            <label htmlFor="username" className='sm:mr-10 lg:mr-10 text-2xl tracking-wide'>Username</label>
             <input type="text" id='username' className='border px-3 py-2 border-neutral-400 rounded' onChange={(e)=>{setUsername(e.target.value)}}/>
           </div>
           <div className='my-5 mx-10'>
-            <label htmlFor="password" className='mr-12 tracking-wide text-2xl'>Password</label>
+            <label htmlFor="password" className='sm:mr-12 lg:mr-12 tracking-wide text-2xl'>Password</label>
             <input type="password" id='password' className='border px-3 py-2 border-neutral-400 rounded' onChange={(e)=>{setPassword(e.target.value)}}/>
           </div>
-          <div className=''>
-            <button type='submit' className='px-3 py-2 rounded-lg bg-gradient-to-r from-orange-400 to-orange-800  tracking-wide text-2xl border-white fon border-2 mt-5' >Login</button>
+          <div className='mt-10'>
+            <button type='submit' className='px-3 py-2 rounded-lg bg-gradient-to-r  tracking-wide text-2xl border-white fon border-2 mt-5 signin-btn work'>Login</button>
           </div>
         </form>
       </div>
