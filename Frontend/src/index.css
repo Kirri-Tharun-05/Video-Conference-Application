@@ -228,8 +228,29 @@
   transition: text-shadow 0.5s ease-in-out;
 }
 
+
 .work{
   text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+.menu{
+  width: 8rem;
+  transition: 0.5s background-color ease-in-out, 0.5s transform ease-in-out,0.5s color ease-in-out,0.5s border ease-in-out;
+  font-weight: 500;
+}
+.menu:hover{
+  transform: scale(1.1);
+  background-color:white;
+  color: black;
+  border:none;
+}
+.menu-login:hover{
+  @apply text-blue-500;
+  border: none;
+}
+
+.dropdown-menu{
+  background: linear-gradient(to right, #111827, #1f2937, #374151);
 }
 
 .expand {
@@ -346,11 +367,12 @@ button {
   margin: 1rem;
   border-radius: 1rem;
   background-color: transparent;
-  transition: 0.5s background-color ease-in-out,0.5s color ease-in-out;
+  transition: 0.5s background-color ease-in-out,0.5s color ease-in-out,transform 0.5s ease-in-out;
 }
 .steps:hover{
   background-color: white;
   color: black;
+  transform: scale(1.1) !important;
 }
 
 .steps h2{

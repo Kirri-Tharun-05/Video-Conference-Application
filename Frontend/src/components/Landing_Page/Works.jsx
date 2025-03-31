@@ -1,4 +1,6 @@
-import React from 'react'
+import React from 'react';
+import { motion } from 'framer-motion';
+
 function Works() {
     const steps = [
         {
@@ -14,26 +16,39 @@ function Works() {
             description: "Enjoy HD video, screen sharing, and in-meeting chat for seamless communication.",
         },
     ];
+
     return (
         <div className='my-80 flex flex-col items-center'>
-            <h1 className='text-5xl text-center mb-10 work'>
+            <motion.h1 
+                className='text-5xl text-center mb-10 work'
+                initial={{ opacity: 0, y: -50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.6 }}
+            >
                 How It <span className='text-blue-500'>Works?</span>
-            </h1>
+            </motion.h1>
 
-            <div className="flex flex-col items-center space-y-4">
+            <div className="flex flex-col items-center space-y-6">
                 {steps.map((step, index) => (
-                    <div key={index} className="steps border p-4 rounded-lg shadow-md w-full max-w-lg text-center">
+                    <motion.div 
+                        key={index} 
+                        className="steps border p-6 rounded-lg shadow-md w-full max-w-lg text-center"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: false, amount: 0.3 }}
+                        transition={{ duration: 0.6, delay: index * 0.2 }}
+                    >
                         <h2 className="text-xl font-bold">
                             {`Step ${index + 1}:`}
                             <span className="font-semibold text-blue-500"> {step.title}</span>
                         </h2>
                         <p className="text-gray-400">{step.description}</p>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
-
         </div>
-    )
+    );
 }
 
 export default Works;
