@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import server from '../environment';
 
 const isAuth = (WrappedContent) => {
     const AuthComponent = (props) => {
@@ -9,7 +10,7 @@ const isAuth = (WrappedContent) => {
         useEffect(() => {
             const checkAuth = async () => {
                 try {
-                    const response = await fetch('/auth/check-session', {
+                    const response = await fetch(`${server}/auth/check-session`, {
                         credentials: 'include', // Important for sending cookies
                     });
                     const data = await response.json();
