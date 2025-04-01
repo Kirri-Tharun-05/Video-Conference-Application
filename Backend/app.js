@@ -53,7 +53,7 @@ const sessionOptions = ({
 app.set("trust proxy", 1);
 app.use(
   cors({
-    origin: "https://video-conference-application-frontend.onrender.com", // Allow only your frontend origin
+    origin: "https://nex-call-luk0.onrender.com", // Allow only your frontend origin
     credentials: true,
     // methods: ["GET", "POST", "PUT", "DELETE"],
     // allowedHeaders: ["Content-Type", "Authorization"],

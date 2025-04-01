@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const passport = require("passport");
-const CLIENT_URL = "https://video-conference-application-frontend.onrender.com/home";
+const CLIENT_URL = "https://nex-call-luk0.onrender.com/home";
 const User = require('../models/user');
 
 router.get('/user', (req, res) => {
