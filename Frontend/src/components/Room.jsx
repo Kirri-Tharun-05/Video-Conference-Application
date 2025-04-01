@@ -44,7 +44,7 @@ function Room() {
         </div>
         }
       </div>
-      <div>
+      <div className='animation'>
         <Lottie animationData={animation2} className='animation' />
       </div>
     </div>

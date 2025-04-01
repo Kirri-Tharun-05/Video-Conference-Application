@@ -11,8 +11,14 @@
   position: relative;
   align-items: center;
   min-height: 80vh;
-  background-color: rgb(8, 8, 64);
+  background-color: black;
   margin-bottom: 5rem;
+}
+
+.roomPreVideo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .meetUserContainer {
@@ -195,11 +201,11 @@
   border-radius: 0.5rem;
   width: fit-content;
   background-color: #2b7fff;
-  transition: 0.3s transform ease-in-out,0.3s color ease-in-out,0.3s background-color ease-in-out;
+  transition: 0.3s transform ease-in-out, 0.3s color ease-in-out, 0.3s background-color ease-in-out;
 
 }
 
-.getStarted:hover{
+.getStarted:hover {
   transform: scale(1.1);
   color: black;
   background-color: white;
@@ -243,27 +249,29 @@
 }
 
 
-.work{
+.work {
   text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.8);
 }
 
-.menu{
+.menu {
   width: 8rem;
-  transition: 0.3s background-color ease-in-out, 0.3s transform ease-in-out,0.3s color ease-in-out,0.3s border ease-in-out;
+  transition: 0.3s background-color ease-in-out, 0.3s transform ease-in-out, 0.3s color ease-in-out, 0.3s border ease-in-out;
   font-weight: 500;
 }
-.menu:hover{
+
+.menu:hover {
   transform: scale(1.1);
-  background-color:white;
+  background-color: white;
   color: black;
-  border:none;
+  border: none;
 }
-.menu-login:hover{
+
+.menu-login:hover {
   @apply text-blue-500;
   border: none;
 }
 
-.dropdown-menu{
+.dropdown-menu {
   background: linear-gradient(to right, #111827, #1f2937, #374151);
 }
 
@@ -289,7 +297,7 @@
 .roomId {
   border: 2px solid black;
   padding: 0.5rem 1rem;
-  margin-top:1rem;
+  margin-top: 1rem;
   border-radius: 0.5rem;
   background-color: white;
   @apply text-blue-600;
@@ -297,19 +305,20 @@
   font-weight: 500;
   transition: 0.2s transform ease-in-out;
 }
- 
+
 .roomId:focus {
   background-color: white;
-  transform:scale(1.05) ;
+  transform: scale(1.05);
 }
-.roomId::placeholder{
+
+.roomId::placeholder {
   color: gray;
 }
 
 /* .roomId::placeholder { */
-  /* font-weight: 800; */
-  /* color: gray; */
-  /* opacity: 1; */
+/* font-weight: 800; */
+/* color: gray; */
+/* opacity: 1; */
 /* } */
 
 
@@ -340,7 +349,7 @@
 }
 
 .historyList::-webkit-scrollbar-thumb {
-  background:linear-gradient(to bottom, #4997e9, #024996);
+  background: linear-gradient(to bottom, #4997e9, #024996);
   border-radius: 1rem;
   border: 3.2px solid transparent;
   background-clip: content-box;
@@ -384,32 +393,37 @@ button {
 .hero-title {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
-.steps{
+
+.steps {
   border: 1px solid white;
   padding: 1em;
   margin: 1rem;
   border-radius: 1rem;
   background-color: transparent;
-  transition: 0.5s background-color ease-in-out,0.5s color ease-in-out,transform 0.5s ease-in-out;
+  transition: 0.5s background-color ease-in-out, 0.5s color ease-in-out, transform 0.5s ease-in-out;
 }
-.steps:hover{
+
+.steps:hover {
   background-color: white;
   color: black;
   transform: scale(1.1) !important;
 }
 
-.steps h2{
+.steps h2 {
   font-weight: 500;
   font-size: 1.5rem;
 }
-.steps:hover h2{
+
+.steps:hover h2 {
   transition: 0.5s color ease-in-out;
   color: black;
 }
-.steps:hover span{
+
+.steps:hover span {
   color: #386fe7;
 }
-.steps:hover p{
+
+.steps:hover p {
   color: #374151;
   transition: 0.5s color ease-in-out;
 }
@@ -468,27 +482,67 @@ button {
   }
 }
 
+@media (max-width:425px) {
+  .roomPreVideo {
+    @apply text-center;
+  }
+
+  .roomPreVideo h1 {
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width:768px) {
+  .roomPreVideo {
+    flex-direction: column;
+  }
+}
+
+@media (max-width:640px) {
+  .roomPreVideo h1 {
+    @apply text-4xl;
+  }
+}
+
 @media (max-width: 539px) {
-  .signin-btn{
-    @apply bg-blue-500;
-    font-size: 1.5rem;
-    font-weight: 500;
-    padding:5px 1rem;
-    border:none;
-  }
-  .feature{
-    font-size: 2rem;
-  }
-  .min-video {
-    height: 10vh;
-  }
-  
-  .hero-img{
+  .roomContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 3rem;
   }
 
-  .hero{
-    margin-top:2rem;
+  .roomContainer :nth-child(1) {
+    @apply text-3xl;
+  }
+
+  .roomContainer :nth-child(4) {
+    background-color: black;
+    margin-bottom: -3rem;
+  }
+
+  .signin-btn {
+    @apply bg-blue-500;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 5px 1rem;
+    border: none;
+  }
+
+  .feature {
+    font-size: 2rem;
+  }
+
+  .min-video {
+    height: 10vh;
+  }
+
+  .hero-img {
+    margin-top: 3rem;
+  }
+
+  .hero {
+    margin-top: 2rem;
   }
 
   .meetVideoContainer {
@@ -506,71 +560,80 @@ button {
   .buttons {
     gap: 1.3rem;
   }
+
+  .roomPreVideo {
+    flex-direction: column;
+    @apply text-center;
+  }
+
 }
 
-@media (min-width:540px){
-  .hero-img{
+@media (min-width:540px) {
+  .hero-img {
     margin-top: 3rem;
-  } 
+  }
+
+  .roomPreVideo {
+    @apply text-center;
+  }
+
 }
 
 @media (min-width:600px) {
   .meetUserContainer {
     height: 16vh;
   }
-  /* .hero-img{
-    margin-top: 4rem;
-  } */
-
-  /* .roomContainer{ */
-    /* 768 */
-    /* display: flex; */
-    /* background-color: black; */
-    /* flex-direction: column; */
-    /* align-items: center; */
-  /* } */
-
 }
 
-@media (max-width:965px)
-{
-  .roomContent{
+@media (max-width:965px) {
+  .roomContent {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 }
-@media (min-width:1024px){
-  .signin-btn{
+
+@media (min-width:1024px) {
+  .signin-btn {
     @apply bg-blue-500;
     font-size: 1.5rem;
     font-weight: 500;
-    padding:5px 1rem;
-    border:none;
-    transition: 0.3s transform ease-in-out,0.3s background-color ease-in-out;
+    padding: 5px 1rem;
+    border: none;
+    transition: 0.3s transform ease-in-out, 0.3s background-color ease-in-out;
   }
-  .signin-btn:hover{
+
+  .signin-btn:hover {
     transform: scale(1.05);
     @apply bg-blue-700
   }
 
-  .menu{
+  .menu {
     width: 7rem;
     padding: 0.5rem;
   }
-  .menu-signin{
+
+  .menu-signin {
     padding: 5px;
     border: 0;
   }
-  .menu-login{
+
+  .menu-login {
     @apply bg-blue-500;
     border: none;
     padding: 5px;
   }
-  .g-btn{
+
+  .g-btn {
     transition: 0.3s transform ease-in-out;
   }
-  .g-btn:hover{
+
+  .g-btn:hover {
     transform: scale(1.05);
+  }
+
+  .roomPreVideo h1 {
+    @apply text-4xl;
+    @apply text-center;
   }
 }
