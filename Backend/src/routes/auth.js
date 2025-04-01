@@ -69,7 +69,7 @@ router.get(
     failureRedirect: "/login/failed",
   })
 );
-app.get('/check-session', (req, res) => {
+router.get('/check-session', (req, res) => {
   if (req.isAuthenticated()) {
       res.json({ authenticated: true, user: req.user });
   } else {
