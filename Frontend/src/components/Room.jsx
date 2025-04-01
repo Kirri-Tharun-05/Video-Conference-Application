@@ -33,21 +33,19 @@ function Room() {
   }, []);
 
   return (
-    <div>
-      <div className="roomContent">
-        <div>
-          {userName !== null && <div className="opacity-0 fade-in"><h1 className='text-3xl'>Hello {userName}!</h1>
-            <h1 className='text-2xl'>Type Your Room Id</h1>
-            <input type="text" name="" id="" placeholder='Enter Room Id' onChange={e => setRoomId(e.target.value)} className='roomId' required />
-            <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
-              Join
-            </button>
-            </div>
-          }
+    <div className="roomContent lg:px-5">
+      <div>
+        {userName !== null && <div className="opacity-0 fade-in work roomContainer sm:mt-5"> <h1 className='sm:text-5xl lg:text-6xl sm:text-center lg:text-start'>Hello <span className='text-blue-500 '>{userName}!</span></h1>
+          <h1 className='text-2xl mt-5 sm:text-center lg:text-start sm:text-3xl'>Enter Your Room Id To Join</h1>
+          <input type="text" name="" id="" placeholder='Enter Room Id' onChange={e => setRoomId(e.target.value)} className='roomId' required />
+          <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
+            Join
+          </button>
         </div>
-        <div>
-          <Lottie animationData={animation2} className='animation' />
-        </div>
+        }
+      </div>
+      <div>
+        <Lottie animationData={animation2} className='animation' />
       </div>
     </div>
   )
