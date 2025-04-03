@@ -227,6 +227,7 @@
 
 .animate-card {
   transition: 0.5s background-color ease-in-out, 2s color ease-in-out;
+  z-index: -10;
 }
 
 .animate-card:hover {
@@ -517,7 +518,8 @@ button {
   }
 
   .roomContainer :nth-child(4) {
-    background-color: black;
+    /* background-color: black; */
+    z-index: 10;
     margin-bottom: -3rem;
   }
 
