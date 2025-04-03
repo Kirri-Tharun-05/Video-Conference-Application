@@ -325,6 +325,7 @@
 
 .animation {
   height: 30rem;
+  z-index: -10;
 }
 
 .history {

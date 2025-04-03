@@ -44,12 +44,12 @@ function Room() {
         </div>
         }
       </div>
-      <div className='animation'>
+      <div className='animation room-page-animation'>
         <Lottie animationData={animation2} className='animation' />
       </div>
     </div>
   )
 }
 
-export default isAuth(Room);
-// export default Room;
+// export default isAuth(Room);
+export default Room;
