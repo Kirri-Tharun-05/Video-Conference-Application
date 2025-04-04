@@ -5,14 +5,7 @@ import { toast } from 'react-toastify';
 import { Flashlight, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import server from './environment';
-// import logo8 from './logos/logo1.png';
-// import logo8 from './logos/logo2.png';
-// import logo8 from './logos/logo3.png';
-// import logo8 from './logos/logo4.png';
-// import logo8 from './logos/logo8.png';
-// import logo8 from './logos/logo8.png';
-import logo7 from './logos/logo6.png';
-// import logo7 from './logos/logo7.png';
+import logo from './logos/main-logo.png';
 const Navbar = () => {
   const [currUser, setCurrUser] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +72,7 @@ const Navbar = () => {
 
         {/* Logo */}
         <a href='/home' className='text-2xl'>
-          <img src={logo7} alt="Logo" className="h-12" />
+          <img src={logo} alt="Logo" className="h-14" />
         </a>
 
         {/* Desktop Menu */}
