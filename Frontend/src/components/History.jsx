@@ -11,7 +11,7 @@ const History = () => {
     useEffect(() => {
         axios.get(`${server}/history/getUserHistory`, { withCredentials: true })
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 setMeetings(res.data);
             })
             .catch((e) => { console.log(e) })

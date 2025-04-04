@@ -21,8 +21,8 @@ const peerConfigConnections = {
     ]
 }
 function Lobby() {
-    console.log('connections : ', connections);
-    console.log('connections : ', Object.keys(connections).length);
+    // console.log('connections : ', connections);
+    // console.log('connections : ', Object.keys(connections).length);
 
 
     var socketRef = useRef();
@@ -62,7 +62,7 @@ function Lobby() {
     const videoRef = useRef([]) //A React ref (useRef) that stores the same list of video streams but does NOT trigger re-renders.
     //Manually updated whenever videos is updated.
 
-    console.log(messages);
+    // console.log(messages);
     const getPermissions = async () => {  // This function is to get the permissions for the video and audio
         try {
             const videoPermission = await navigator.mediaDevices.getUserMedia({ video: true }); // getting user permission for video
@@ -194,7 +194,7 @@ function Lobby() {
 
     // todo addMessage
     let addMessage = (data, sender, socketIdSender) => {
-        console.log(data, ':', sender, ':', socketIdSender);
+        // console.log(data, ':', sender, ':', socketIdSender);
         setMessages((prevMessages) => [
             ...prevMessages, { sender: sender, data: data }
         ]);
@@ -215,7 +215,7 @@ function Lobby() {
                     .then(() => {
                         if (signal.sdp.type === 'offer') { // If the received SDP is an "offer", the other peer (receiver) must create an "answer"
                             connections[fromId].createAnswer().then((description) => {
-                                console.log("printing the description : ", description);
+                                // console.log("printing the description : ", description);
                                 connections[fromId].setLocalDescription(description).then(() => {
                                     // Send the answer back to the original peer through the signaling server
                                     socketRef.current.emit('signal', fromId, JSON.stringify({ "sdp": connections[fromId].localDescription })) //sending the answer to the second user who sent the offer
@@ -234,12 +234,12 @@ function Lobby() {
     let connectToSocketServer = () => {
         socketRef.current = io.connect(server_URL, { secure: false });
 
-        console.log('inside connectToSocketServer : ', socketRef);
+        // console.log('inside connectToSocketServer : ', socketRef);
 
         socketRef.current.on('signal', gotMessageFromServer);
 
         socketRef.current.on('connect', () => {
-            console.log('Connect is triggered in front end');
+            // console.log('Connect is triggered in front end');
 
             socketRef.current.emit('join-call', window.location.href,username); // sending path to socket.js server
 
@@ -253,7 +253,7 @@ function Lobby() {
 
             //updated
             socketRef.current.on('user-joined', (id,user_name, clients) => { // it receives id (the new user's ID) and clients (a list of existing users in the call).
-                console.log('user Joined : ', id,"name : ",user_name);
+                // console.log('user Joined : ', id,"name : ",user_name);
                 clients.forEach((socketListId) => {
 
 
@@ -320,7 +320,7 @@ function Lobby() {
                             }
                             setVideos(videos => {
                                 const updatedVideos = [...videos, newVideo];
-                                console.log("Updated Videos:", updatedVideos);
+                                // console.log("Updated Videos:", updatedVideos);
                                 videoRef.current = updatedVideos;
                                 return updatedVideos;
                             })
@@ -364,10 +364,10 @@ function Lobby() {
     let getMedia = () => {
         setVideo(videoAvailable);
         setAudio(audioAvailable);
-        console.log('inside getMedia function : ', video); // it will give undefined because setVideo and setAudio are asyncronous
-        console.log('inside getMedia function : ', videoAvailable);
-        console.log('inside getMedia function : ', audio);
-        console.log('inside getMedia function : ', audioAvailable);
+      //  console.log('inside getMedia function : ', video); // it will give undefined because setVideo and setAudio are asyncronous
+        // console.log('inside getMedia function : ', videoAvailable);
+        // console.log('inside getMedia function : ', audio);
+        // console.log('inside getMedia function : ', audioAvailable);
         connectToSocketServer();
     }
 
@@ -524,8 +524,8 @@ function Lobby() {
                         <div className='chatMessages'>
                             <p style={{ color: 'black' }}>{ }</p>
                             {messages.map((item, index) => {
-                                console.log("inside the messages.map : ", item)
-                                console.log("inside the messages.map : ", username)
+                                // console.log("inside the messages.map : ", item)
+                                // console.log("inside the messages.map : ", username)
                                 const isCurrentUser = item.sender === username; // Compare sender with the current user
 
                                 return (

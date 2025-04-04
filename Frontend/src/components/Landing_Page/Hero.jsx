@@ -6,7 +6,7 @@ import { Button } from '../Button.jsx'
 export const Hero = () => {
     const navigate = useNavigate();
     const handleClick = () => {
-        console.log("clicked");
+        // console.log("clicked");
         navigate('/Room');
     }
     return (

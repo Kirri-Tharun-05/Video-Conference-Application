@@ -13,7 +13,7 @@ const Login = () => {
     try{
       const result= await axios.post(`${server}/login`,{
         username,password },{ withCredentials: true })
-      console.log(result);
+      // console.log(result);
       localStorage.setItem('flashMessage', result.data.message);
       window.dispatchEvent(new Event("userLoggedIn"));
       navigate('/home')
