@@ -550,6 +550,7 @@ function Lobby() {
                         {videos.map((video) => (
                             <div key={video.socketId} className='conferenceContainer w-full sm:w-1/2 lg:w-1/2 '>
                                 <h2 style={{ color: 'white' }}>{video.socketId}</h2>
+                                <h2 style={{ color: 'white' }}>{username}</h2>
                                 <video ref={ref => {
                                     if (ref && video.stream) {
                                         ref.srcObject = video.stream;
