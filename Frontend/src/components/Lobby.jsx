@@ -241,7 +241,7 @@ function Lobby() {
         socketRef.current.on('connect', () => {
             console.log('Connect is triggered in front end');
 
-            socketRef.current.emit('join-call', window.location.href); // sending path to socket.js server
+            socketRef.current.emit('join-call', window.location.href,username); // sending path to socket.js server
 
             socketIdRef.current = socketRef.current.id; //after Connection the socket will get a id
 
@@ -251,8 +251,9 @@ function Lobby() {
                 setVideos((videos) => videos.filter((video) => video.socketId !== id))// We will get all the videos except the user id who left the room
             })
 
-            socketRef.current.on('user-joined', (id, clients) => { // it receives id (the new user's ID) and clients (a list of existing users in the call).
-                console.log('user Joined : ', id);
+            //updated
+            socketRef.current.on('user-joined', (id,user_name, clients) => { // it receives id (the new user's ID) and clients (a list of existing users in the call).
+                console.log('user Joined : ', id,"name : ",user_name);
                 clients.forEach((socketListId) => {
 
 
@@ -313,7 +314,7 @@ function Lobby() {
                             let newVideo = {
                                 socketId: socketListId,
                                 stream: event.stream,
-                                user_name:username,
+                                username:user_name, //updated
                                 autoPlay: true,
                                 playsInLine: true
                             }
@@ -551,7 +552,7 @@ function Lobby() {
                         {videos.map((video) => (
                             <div key={video.socketId} className='conferenceContainer w-full sm:w-1/2 lg:w-1/2 '>
                                 {/* {console.log("Inside Video Block -----> ",video)} */}
-                                <h2 style={{ color: 'white' }}>{video.user_name}</h2>
+                                <h2 style={{ color: 'white' }}>{}</h2>
                                 {/* <h2 style={{ color: 'white' }}>{video.socketIdSender}</h2> */}
                                 <video ref={ref => {
                                     if (ref && video.stream) {

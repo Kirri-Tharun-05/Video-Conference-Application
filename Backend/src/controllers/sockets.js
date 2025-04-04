@@ -16,7 +16,7 @@ const connectionToSocket = (server) => {
 
     io.on('connection', (socket) => {
         console.log('Someone Connected');
-        socket.on('join-call', (path) => {
+        socket.on('join-call', (path,username) => {
             console.log('someone trying to join call : ',socket.id);
             // console.log(connections);
             if (connections[path] === undefined) {
@@ -25,13 +25,15 @@ const connectionToSocket = (server) => {
             }
             // here path (key) is a room number where socket.id is a user who are joining the room  
             connections[path].push(socket.id);
-
+            //--updated here----------------------------------------
+            socket.user_name=username;
+            //----------------------------------------------------
             // here timeOnline is storing the date info of every individual user using socket.id 
             timeOnline[socket.id] = new Date();
 
             for (let a = 0; a < connections[path].length; a++) {
                 // console.log(connections[path])
-                io.to(connections[path][a]).emit('user-joined', socket.id,connections[path]);
+                io.to(connections[path][a]).emit('user-joined',socket.id,socket.user_name,connections[path]);
                 // console.log('inside loop')
             }
 
