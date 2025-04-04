@@ -549,8 +549,9 @@ function Lobby() {
                     <div className='conference pb-15 flex flex-wrap justify-center '>
                         {videos.map((video) => (
                             <div key={video.socketId} className='conferenceContainer w-full sm:w-1/2 lg:w-1/2 '>
+                                {console.log("Inside Video Block -----> ",video)}
                                 <h2 style={{ color: 'white' }}>{video.socketId}</h2>
-                                <h2 style={{ color: 'white' }}>{username}</h2>
+                                <h2 style={{ color: 'white' }}>{video.socketIdSender}</h2>
                                 <video ref={ref => {
                                     if (ref && video.stream) {
                                         ref.srcObject = video.stream;
