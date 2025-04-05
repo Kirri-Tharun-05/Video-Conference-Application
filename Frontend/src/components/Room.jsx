@@ -56,5 +56,5 @@ function Room() {
   )
 }
 
-// export default isAuth(Room);
-export default Room;
+export default isAuth(Room);
+// export default Room;
