@@ -18,12 +18,12 @@ const isAuth = (WrappedContent) => {
                         setIsAuthenticated(true);
                     } else {
                         setIsAuthenticated(false);
-                        router('/login');
+                        router('/signin');
                     }
                 } catch (error) {
                     console.error('Error checking authentication:', error);
                     setIsAuthenticated(false);
-                    router('/login');
+                    router('/signin');
                 }
             };
 
