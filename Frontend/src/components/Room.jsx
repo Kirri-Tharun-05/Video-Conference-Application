@@ -41,8 +41,13 @@ function Room() {
           <button type='submit' className='getStarted m-5 px-4 py-2 text-white font-bold transition-transform active:scale-90' onClick={handleClick}>
             Join
           </button>
+          <p className='text-md mt-2 text-gray-300 sm:text-center lg:text-start instructions'>
+            ✦ If you're creating a new room, share this Room ID with others to let them join.<br /><br/>
+            ✦ If you're joining a room, enter the Room ID shared by the host.
+          </p>
         </div>
         }
+
       </div>
       <div className='animation room-page-animation'>
         <Lottie animationData={animation2} className='animation' />
@@ -51,5 +56,5 @@ function Room() {
   )
 }
 
-export default isAuth(Room);
-// export default Room;
+// export default isAuth(Room);
+export default Room;
