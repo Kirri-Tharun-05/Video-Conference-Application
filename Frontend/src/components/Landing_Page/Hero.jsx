@@ -7,7 +7,7 @@ export const Hero = () => {
     const navigate = useNavigate();
     const handleClick = () => {
         // console.log("clicked");
-        navigate('/Room');
+        navigate('/signin');
     }
     return (
         <div className='flex justify-between flex-col lg:flex-row hero work items-center'>
